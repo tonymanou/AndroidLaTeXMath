@@ -49,7 +49,6 @@ package org.scilab.forge.jlatexmath;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -112,7 +111,7 @@ public class HorizontalBox extends Box {
         for (Box box: children) {
             /*int i = children.indexOf(box);
               if (breakPositions != null && breakPositions.indexOf(i) != -1) {
-              box.markForDEBUG = java.awt.Color.BLUE;
+              box.markForDEBUG = Color.BLUE;
               }*/
 
             box.draw(g2, xPos, y + box.shift);

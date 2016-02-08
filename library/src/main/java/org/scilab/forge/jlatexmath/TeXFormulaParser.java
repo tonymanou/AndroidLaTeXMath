@@ -46,14 +46,13 @@
 
 package org.scilab.forge.jlatexmath;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
 
 /**
  * Parses a "TeXFormula"-element representing a predefined TeXFormula's from an XML-file.
@@ -125,7 +124,7 @@ public class TeXFormulaParser {
 	    //String code = "TeXFormula.predefinedTeXFormulasAsString.put(\"%s\", \"%s\");";
 	    //System.out.println(String.format(code, formulaName, argValues[0]));
             try {
-                TeXFormula f = TeXFormula.class.getConstructor(argClasses).newInstance(argValues);
+                TeXFormula f = (TeXFormula) TeXFormula.class.getConstructor(argClasses).newInstance(argValues);
                 // succesfully created, so add to "temporary formula's"-hashtable
                 tempFormulas.put(name, f);
             } catch (Exception e) {
@@ -153,7 +152,7 @@ public class TeXFormulaParser {
             Object[] argValues = getArgumentValues(args);
             // create TeXFormula object
             try {
-                MacroInfo f = MacroInfo.class.getConstructor(argClasses).newInstance(argValues);
+                MacroInfo f = (MacroInfo) MacroInfo.class.getConstructor(argClasses).newInstance(argValues);
                 // succesfully created, so add to "temporary formula's"-hashtable
                 tempCommands.put(name, f);
             } catch (IllegalArgumentException e) {

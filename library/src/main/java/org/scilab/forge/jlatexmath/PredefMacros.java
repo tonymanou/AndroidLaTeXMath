@@ -45,12 +45,12 @@
 
 package org.scilab.forge.jlatexmath;
 
+import org.scilab.forge.jlatexmath.dynamic.DynamicAtom;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.scilab.forge.jlatexmath.dynamic.DynamicAtom;
 
 /**
  * This class contains the most of basic commands of LaTeX, they're activated in

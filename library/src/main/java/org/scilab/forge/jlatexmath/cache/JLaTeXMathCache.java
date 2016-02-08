@@ -45,22 +45,22 @@
 
 package org.scilab.forge.jlatexmath.cache;
 
+import org.scilab.forge.jlatexmath.ParseException;
+import org.scilab.forge.jlatexmath.TeXFormula;
+import org.scilab.forge.jlatexmath.TeXIcon;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.lang.ref.ReferenceQueue;
 import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
 import java.util.Iterator;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.scilab.forge.jlatexmath.ParseException;
-import org.scilab.forge.jlatexmath.TeXFormula;
-import org.scilab.forge.jlatexmath.TeXIcon;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Class to cache generated image from formulas

@@ -48,12 +48,11 @@
 
 package org.scilab.forge.jlatexmath;
 
+import org.scilab.forge.jlatexmath.dynamic.DynamicAtom;
+
 import java.util.BitSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ListIterator;
-
-import org.scilab.forge.jlatexmath.dynamic.DynamicAtom;
 
 /**
  * An atom representing a horizontal row of other atoms, to be seperated by glue.

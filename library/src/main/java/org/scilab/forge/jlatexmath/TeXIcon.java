@@ -60,7 +60,7 @@ import java.awt.geom.AffineTransform;
 import javax.swing.Icon;
 
 /**
- * An {@link javax.swing.Icon} implementation that will paint the TeXFormula
+ * An {@link Icon} implementation that will paint the TeXFormula
  * that created it.
  * <p>
  * This class cannot be instantiated directly. It can be constructed from a
