@@ -46,9 +46,9 @@
 package org.scilab.forge.jlatexmath;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 
 /**
  * A box representing a box containing a graphics.
@@ -59,11 +59,11 @@ public class GraphicsBox extends Box {
     public final static int NEAREST_NEIGHBOR = 1;
     public final static int BICUBIC = 2;
 
-    private BufferedImage image;
+    private Image image;
     private float scl;
     private Object interp;
 
-    public GraphicsBox(BufferedImage image, float width, float height, float size, int interpolation) {
+    public GraphicsBox(Image image, float width, float height, float size, int interpolation) {
 	this.image = image;
 	this.width = width;
 	this.height = height;

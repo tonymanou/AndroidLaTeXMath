@@ -54,7 +54,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
@@ -245,7 +244,7 @@ public final class JLaTeXMathCache {
         TeXFormula formula = new TeXFormula(cached.f);
         TeXIcon icon = formula.createTeXIcon(cached.style, cached.size, cached.type, cached.fgcolor);
         icon.setInsets(new Insets(cached.inset, cached.inset, cached.inset, cached.inset));
-        BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        Image image = new Image(icon.getIconWidth(), icon.getIconHeight(), Image.TYPE_INT_ARGB);
         Graphics2D g2 = image.createGraphics();
         icon.paintIcon(g2, 0, 0);
         g2.dispose();

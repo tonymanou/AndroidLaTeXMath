@@ -50,7 +50,6 @@ import java.awt.Image;
 import java.awt.Label;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -62,7 +61,7 @@ import java.util.Map;
 public class GraphicsAtom extends Atom {
     
     private Image image = null;
-    private BufferedImage bimage;
+    private Image bimage;
     private Label c;
     private int w, h;
 
@@ -126,7 +125,7 @@ public class GraphicsAtom extends Atom {
 	if (image != null) {
 	    w = image.getWidth(c);
 	    h = image.getHeight(c);
-	    bimage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+	    bimage = new Image(w, h, Image.TYPE_INT_ARGB);
 	    Graphics2D g2d = bimage.createGraphics();
 	    g2d.drawImage(image, 0, 0, null);
 	    g2d.dispose();

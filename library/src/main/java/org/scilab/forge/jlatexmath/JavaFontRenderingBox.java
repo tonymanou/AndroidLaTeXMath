@@ -47,10 +47,10 @@ package org.scilab.forge.jlatexmath;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -59,7 +59,7 @@ import java.util.Map;
  */
 public class JavaFontRenderingBox extends Box {
 
-    private static final Graphics2D TEMPGRAPHIC = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB).createGraphics();
+    private static final Graphics2D TEMPGRAPHIC = new Image(1, 1, Image.TYPE_INT_ARGB).createGraphics();
 
     private static Font font = new Font("Serif", Font.PLAIN, 10);
 

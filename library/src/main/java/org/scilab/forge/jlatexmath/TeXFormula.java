@@ -54,7 +54,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -873,7 +872,7 @@ public class TeXFormula {
         icon.setInsets(new Insets(2, 2, 2, 2));
         int w = icon.getIconWidth(), h = icon.getIconHeight();
 
-        BufferedImage image = new BufferedImage(w, h, bg == null ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
+        Image image = new Image(w, h, bg == null ? Image.TYPE_INT_ARGB : Image.TYPE_INT_RGB);
         Graphics2D g2 = image.createGraphics();
         if (bg != null) {
             g2.setColor(bg);
@@ -899,7 +898,7 @@ public class TeXFormula {
         icon.setInsets(new Insets(2, 2, 2, 2));
         int w = icon.getIconWidth(), h = icon.getIconHeight();
 
-        BufferedImage image = new BufferedImage(w, h, bg == null ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
+        Image image = new Image(w, h, bg == null ? Image.TYPE_INT_ARGB : Image.TYPE_INT_RGB);
         Graphics2D g2 = image.createGraphics();
         if (bg != null) {
             g2.setColor(bg);
