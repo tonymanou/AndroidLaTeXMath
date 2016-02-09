@@ -47,7 +47,6 @@ package org.scilab.forge.jlatexmath;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 
@@ -73,7 +72,6 @@ public class FcscoreBox extends Box {
 
     public void draw(Graphics2D g2, float x, float y) {
 	AffineTransform transf = g2.getTransform();
-	Stroke oldStroke = g2.getStroke();
 
 	final double sx = transf.getScaleX();
 	final double sy = transf.getScaleY();
@@ -106,9 +104,8 @@ public class FcscoreBox extends Box {
 	    line.setLine((x + space) * s, (y - height / 2.f) * s, xx - s * space / 2, (y - height / 2.f) * s);
 	    g2.draw(line);
 	}
-	
+
 	g2.setTransform(transf);
-	g2.setStroke(oldStroke);
     }
 
     public int getLastFontId() {

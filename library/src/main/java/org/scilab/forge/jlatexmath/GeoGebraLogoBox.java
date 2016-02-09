@@ -48,7 +48,6 @@ package org.scilab.forge.jlatexmath;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 
 /**
@@ -72,7 +71,6 @@ public class GeoGebraLogoBox extends Box {
     public void draw(Graphics2D g2, float x, float y) {
 	AffineTransform oldAt = g2.getTransform();
 	Color oldC = g2.getColor();
-	Stroke oldS = g2.getStroke();
 	g2.translate(x + 0.25f * height / 2.15f, y - 1.75f / 2.15f * height);
 	g2.setColor(gray);
 	g2.setStroke(st);
@@ -80,13 +78,11 @@ public class GeoGebraLogoBox extends Box {
 	g2.rotate(-26 * Math.PI / 180, 20.5, 17.5);
 	g2.drawArc(0, 0, 43, 32, 0, 360);
 	g2.rotate(26 * Math.PI / 180, 20.5, 17.5);
-	g2.setStroke(oldS);
 	drawCircle(g2, 16f, -5f);
 	drawCircle(g2, -1f, 7f);
 	drawCircle(g2, 5f, 28f);
 	drawCircle(g2, 27f, 24f);
 	drawCircle(g2, 36f, 3f);
-	g2.setStroke(oldS);
 	g2.setTransform(oldAt);
 	g2.setColor(oldC);
     }

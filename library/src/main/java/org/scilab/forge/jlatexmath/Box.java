@@ -51,7 +51,6 @@ package org.scilab.forge.jlatexmath;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 
@@ -300,7 +299,6 @@ public abstract class Box {
 
     protected void drawDebug(Graphics2D g2, float x, float y, boolean showDepth) {
         if (DEBUG) {
-            Stroke st = g2.getStroke();
             if (markForDEBUG != null) {
                 Color c = g2.getColor();
                 g2.setColor(markForDEBUG);
@@ -328,7 +326,6 @@ public abstract class Box {
 		    g2.setColor(c);
 		}
             }
-            g2.setStroke(st);
         }
     }
 

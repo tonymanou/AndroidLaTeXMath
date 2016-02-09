@@ -47,7 +47,6 @@ package org.scilab.forge.jlatexmath;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -67,7 +66,6 @@ public class ShadowBox extends FramedBox {
     public void draw(Graphics2D g2, float x, float y) {
 	float th = thickness / 2;
 	box.draw(g2, x + space + thickness, y);
-	Stroke st = g2.getStroke();
 	g2.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
 	g2.draw(new Rectangle2D.Float(x + th, y - height + th, width - shadowRule - thickness, height + depth - shadowRule - thickness));
 	float penth = (float) Math.abs(1 / g2.getTransform().getScaleX());
@@ -75,7 +73,6 @@ public class ShadowBox extends FramedBox {
 	g2.fill(new Rectangle2D.Float(x + shadowRule - penth, y + depth - shadowRule - penth, width - shadowRule, shadowRule));
 	g2.fill(new Rectangle2D.Float(x + width - shadowRule - penth, y - height + th + shadowRule, shadowRule, depth + height - 2 * shadowRule - th));
 	//drawDebug(g2, x, y);
-	g2.setStroke(st);
     }
 
     public int getLastFontId() {
@@ -88,14 +85,12 @@ public class ShadowBox extends FramedBox {
 	float th = thickness / 2;
 	float sh = shadowRule / 2;
 	box.draw(g2, x + space + thickness, y);
-	Stroke st = g2.getStroke();
 	g2.setStroke(new BasicStroke(shadowRule, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
 	g2.draw(new Line2D.Float(x + shadowRule, y + depth - sh, x + width, y +  depth - sh));
 	g2.draw(new Line2D.Float(x + width - sh, y - height + shadowRule, x + width - sh, y + depth - shadowRule));
 	g2.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
 	g2.draw(new Rectangle2D.Float(x + th, y - height + th, width - shadowRule - thickness, height + depth - shadowRule - thickness));
 	//drawDebug(g2, x, y);
-	g2.setStroke(st);
     }
 
 */

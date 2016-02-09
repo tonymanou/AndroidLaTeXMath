@@ -48,7 +48,6 @@ package org.scilab.forge.jlatexmath;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -79,7 +78,6 @@ public class FramedBox extends Box {
     }
 
     public void draw(Graphics2D g2, float x, float y) {
-	Stroke st = g2.getStroke();
 	g2.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
 	float th = thickness / 2;
 	if (bg != null) {
@@ -97,7 +95,6 @@ public class FramedBox extends Box {
 	    g2.draw(new Rectangle2D.Float(x + th, y - height + th, width - thickness, height + depth - thickness));
 	}
 	//drawDebug(g2, x, y);
-	g2.setStroke(st);
 	box.draw(g2, x + space + thickness, y);
     }
 
