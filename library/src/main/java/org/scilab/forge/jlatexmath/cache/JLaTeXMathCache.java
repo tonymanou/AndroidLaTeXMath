@@ -247,7 +247,7 @@ public final class JLaTeXMathCache {
         icon.setInsets(new Insets(cached.inset, cached.inset, cached.inset, cached.inset));
         BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = image.createGraphics();
-        icon.paintIcon(null, g2, 0, 0);
+        icon.paintIcon(g2, 0, 0);
         g2.dispose();
         cached.setDimensions(icon.getIconWidth(), icon.getIconHeight(), icon.getIconDepth());
         SoftReference<CachedImage> img = new SoftReference<CachedImage>(new CachedImage(image, cached), queue);

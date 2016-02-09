@@ -881,7 +881,7 @@ public class TeXFormula {
         }
 
         icon.setForeground(fg == null ? Color.BLACK : fg);
-        icon.paintIcon(null, g2, 0, 0);
+        icon.paintIcon(g2, 0, 0);
         g2.dispose();
 
         return image;
@@ -907,7 +907,7 @@ public class TeXFormula {
         }
 
         icon.setForeground(fg == null ? Color.BLACK : fg);
-        icon.paintIcon(null, g2, 0, 0);
+        icon.paintIcon(g2, 0, 0);
         g2.dispose();
 
         return image;
