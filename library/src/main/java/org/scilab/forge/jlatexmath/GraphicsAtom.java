@@ -46,6 +46,9 @@
 package org.scilab.forge.jlatexmath;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.tonymanou.androidlatexmath.helper.AssetHelper;
 
 import java.util.Map;
 
@@ -61,7 +64,7 @@ public class GraphicsAtom extends Atom {
     private int interp = -1;
 
     public GraphicsAtom(String path, String option) {
-        // TODO load image
+        bitmap = BitmapFactory.decodeStream(AssetHelper.getStream(path));
 	buildAtom(option);
     }
 

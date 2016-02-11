@@ -46,6 +46,8 @@
 
 package org.scilab.forge.jlatexmath;
 
+import com.tonymanou.androidlatexmath.helper.AssetHelper;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -79,7 +81,7 @@ public class PredefinedTeXFormulaParser {
     }
     
     public PredefinedTeXFormulaParser(String PredefFile, String type) throws ResourceParseException {
-        this(PredefinedTeXFormulaParser.class.getResourceAsStream(PredefFile), type);
+        this(AssetHelper.getStream(PredefinedTeXFormulaParser.class, PredefFile), type);
     }
 
     public void parse(Map predefinedTeXFormulas) {

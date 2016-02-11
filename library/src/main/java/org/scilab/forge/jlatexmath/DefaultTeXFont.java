@@ -46,7 +46,9 @@
 
 package org.scilab.forge.jlatexmath;
 
+import com.tonymanou.androidlatexmath.helper.AssetHelper;
 import java.awt.Font;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -190,7 +192,7 @@ public class DefaultTeXFont implements TeXFont {
         }
         if (!b) {
             TeXParser.isLoading = true;
-            addTeXFontDescription(base, base.getClass().getResourceAsStream(language), language);
+            addTeXFontDescription(base, AssetHelper.getStream(base.getClass(), language), language);
             for (int i = 0; i < alphabet.length; i++) {
                 loadedAlphabets.add(alphabet[i]);
             }
@@ -204,7 +206,7 @@ public class DefaultTeXFont implements TeXFont {
         String map = "fonts/" + name + "/mappings_" + name+ ".xml";
 
         try {
-            DefaultTeXFont.addAlphabet(alphabet, TeXFormula.class.getResourceAsStream(lg), lg, TeXFormula.class.getResourceAsStream(sym), sym, TeXFormula.class.getResourceAsStream(map), map);
+            DefaultTeXFont.addAlphabet(alphabet, AssetHelper.getStream(TeXFormula.class, lg), lg, AssetHelper.getStream(TeXFormula.class, sym), sym, AssetHelper.getStream(TeXFormula.class, map), map);
         } catch (FontAlreadyLoadedException e) { }
     }
 

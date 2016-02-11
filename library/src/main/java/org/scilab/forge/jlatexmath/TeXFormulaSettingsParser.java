@@ -46,6 +46,8 @@
 
 package org.scilab.forge.jlatexmath;
 
+import com.tonymanou.androidlatexmath.helper.AssetHelper;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -64,7 +66,7 @@ public class TeXFormulaSettingsParser {
     private Element root;
     
     public TeXFormulaSettingsParser() throws ResourceParseException {
-	this(GlueSettingsParser.class.getResourceAsStream(RESOURCE_NAME), RESOURCE_NAME);
+	this(AssetHelper.getStream(GlueSettingsParser.class, RESOURCE_NAME), RESOURCE_NAME);
     }
 
     public TeXFormulaSettingsParser(InputStream file, String name) throws ResourceParseException {

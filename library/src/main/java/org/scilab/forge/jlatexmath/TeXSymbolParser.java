@@ -46,6 +46,8 @@
 
 package org.scilab.forge.jlatexmath;
 
+import com.tonymanou.androidlatexmath.helper.AssetHelper;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -68,7 +70,7 @@ public class TeXSymbolParser {
    private Element root;
 
    public TeXSymbolParser() throws ResourceParseException {
-       this(TeXSymbolParser.class.getResourceAsStream(RESOURCE_NAME), RESOURCE_NAME);
+       this(AssetHelper.getStream(TeXSymbolParser.class, RESOURCE_NAME), RESOURCE_NAME);
    }
 
     public TeXSymbolParser(InputStream file, String name) throws ResourceParseException {

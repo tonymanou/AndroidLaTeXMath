@@ -46,6 +46,8 @@
 
 package org.scilab.forge.jlatexmath;
 
+import com.tonymanou.androidlatexmath.helper.AssetHelper;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -78,7 +80,7 @@ public class GlueSettingsParser {
 	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    factory.setIgnoringElementContentWhitespace(true);
 	    factory.setIgnoringComments(true);
-	    root = factory.newDocumentBuilder().parse(GlueSettingsParser.class.getResourceAsStream(RESOURCE_NAME)).getDocumentElement();
+	    root = factory.newDocumentBuilder().parse(AssetHelper.getStream(GlueSettingsParser.class, RESOURCE_NAME)).getDocumentElement();
 	    parseGlueTypes();
 	    } catch (Exception e) { // JDOMException or IOException
 		throw new XMLResourceParseException(RESOURCE_NAME, e);

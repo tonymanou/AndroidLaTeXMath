@@ -48,6 +48,8 @@
 
 package org.scilab.forge.jlatexmath;
 
+import com.tonymanou.androidlatexmath.helper.AssetHelper;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -55,10 +57,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -181,7 +180,7 @@ public class DefaultTeXFontParser {
     }
     
     public DefaultTeXFontParser() throws ResourceParseException {
-	this(DefaultTeXFontParser.class.getResourceAsStream(RESOURCE_NAME), RESOURCE_NAME);
+	this(AssetHelper.getStream(DefaultTeXFontParser.class, RESOURCE_NAME), RESOURCE_NAME);
     }
     
     public DefaultTeXFontParser(InputStream file, String name) throws ResourceParseException {
@@ -300,9 +299,9 @@ public class DefaultTeXFontParser {
 		// get required string attribute
 		String include = getAttrValueAndCheckIfNotNull("include", (Element)list.item(i));
 		if (base == null) {
-		    fi = parseFontDescriptions(fi, DefaultTeXFontParser.class.getResourceAsStream(include), include);
+		    fi = parseFontDescriptions(fi, AssetHelper.getStream(DefaultTeXFontParser.class, include), include);
 		} else {
-		    fi = parseFontDescriptions(fi, base.getClass().getResourceAsStream(include), include);
+		    fi = parseFontDescriptions(fi, AssetHelper.getStream(base.getClass(), include), include);
 		}
 	    }
 	}
@@ -314,13 +313,13 @@ public class DefaultTeXFontParser {
         if (syms != null) { // element present
 	    // get required string attribute
 	    String include = getAttrValueAndCheckIfNotNull("include", syms);
-	    SymbolAtom.addSymbolAtom(base.getClass().getResourceAsStream(include), include);
+	    SymbolAtom.addSymbolAtom(AssetHelper.getStream(base.getClass(), include), include);
 	}
 	Element settings = (Element)root.getElementsByTagName("FormulaSettings").item(0);
         if (settings != null) { // element present
 	    // get required string attribute
 	    String include = getAttrValueAndCheckIfNotNull("include", settings);
-	    TeXFormula.addSymbolMappings(base.getClass().getResourceAsStream(include), include);
+	    TeXFormula.addSymbolMappings(AssetHelper.getStream(base.getClass(), include), include);
 	}
     }
     
@@ -360,43 +359,20 @@ public class DefaultTeXFontParser {
     }
     
     public static Font createFont(String name) throws ResourceParseException {
-	return createFont(DefaultTeXFontParser.class.getResourceAsStream(name), name);
+	return createFont(DefaultTeXFontParser.class, name, name);
     }
 
-    public static Font createFont(InputStream fontIn, String name) throws ResourceParseException {
+    public static Font createFont(Object base, String path, String name) throws ResourceParseException {
+        return createFont(base.getClass(), path, name);
+    }
+
+    private static Font createFont(Class<?> base, String path, String name) throws ResourceParseException {
         try {
-            Font f = Font.createFont(Font.TRUETYPE_FONT, fontIn).deriveFont(TeXFormula.PIXELS_PER_POINT);
-	    GraphicsEnvironment graphicEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
-	    /**
-	     * The following fails under java 1.5
-	     * graphicEnv.registerFont(f);
-	     * dynamic load then
-	     */
-	    if (shouldRegisterFonts) {
-		try {
-		    Method registerFontMethod = graphicEnv.getClass().getMethod("registerFont", new Class[] { Font.class });
-		    if ((Boolean) registerFontMethod.invoke(graphicEnv, new Object[] { f }) == Boolean.FALSE) {
-			System.err.println("Cannot register the font " + f.getFontName());
-		    }
-		} catch (Exception ex) {
-		    if (!registerFontExceptionDisplayed) {
-			System.err.println("Warning: Jlatexmath: Could not access to registerFont. Please update to java 6");
-			registerFontExceptionDisplayed = true;
-		    }
-		}
-	    }
-	    return f;
+            return Font.createFont(base, path, TeXFormula.PIXELS_PER_POINT);
         } catch (Exception e) {
             throw new XMLResourceParseException(RESOURCE_NAME
 						+ ": error reading font '" + name + "'. Error message: "
 						+ e.getMessage());
-        } finally {
-            try {
-                if (fontIn != null)
-                    fontIn.close();
-            } catch (IOException ioex) {
-                throw new RuntimeException("Close threw exception", ioex);
-            }
         }
     }
     
@@ -414,9 +390,9 @@ public class DefaultTeXFontParser {
 		Element map;
 		try {
 		    if (base == null) {
-			map = factory.newDocumentBuilder().parse(DefaultTeXFontParser.class.getResourceAsStream(include)).getDocumentElement();
+			map = factory.newDocumentBuilder().parse(AssetHelper.getStream(DefaultTeXFontParser.class, include)).getDocumentElement();
 		    } else {
-			map = factory.newDocumentBuilder().parse(base.getClass().getResourceAsStream(include)).getDocumentElement();
+			map = factory.newDocumentBuilder().parse(AssetHelper.getStream(base.getClass(), include)).getDocumentElement();
 		    }
 		} catch (Exception e) {
 		    throw new XMLResourceParseException("Cannot find the file " + include + "!");

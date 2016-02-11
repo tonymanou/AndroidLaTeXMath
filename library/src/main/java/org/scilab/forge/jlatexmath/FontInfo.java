@@ -308,7 +308,7 @@ public class FontInfo {
 	    if (base == null) {
 		font = DefaultTeXFontParser.createFont(path);
 	    } else {
-		font = DefaultTeXFontParser.createFont(base.getClass().getResourceAsStream(path), fontName);
+		font = DefaultTeXFontParser.createFont(base, path, fontName);
 	    }
 	}
         return font;
