@@ -45,7 +45,7 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Graphics2D;
+import android.graphics.Canvas;
 
 /**
  * A box representing a rotated box.
@@ -61,14 +61,15 @@ public class ReflectBox extends Box {
 	depth = b.depth;
 	shift = b.shift;
     }
-    
-    public void draw(Graphics2D g2, float x, float y) {
-	drawDebug(g2, x, y);
-	g2.translate(x, y);
-	g2.scale(-1, 1);
-	box.draw(g2, -width, 0);
-	g2.scale(-1, 1);
-	g2.translate(-x, -y);
+
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
+        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        drawDebug(canvas, x, y);
+        canvas.translate(x, y);
+        canvas.scale(-1, 1);
+        box.draw(canvas, -width, 0);
+        canvas.restoreToCount(save);
     }
 
     public int getLastFontId() {

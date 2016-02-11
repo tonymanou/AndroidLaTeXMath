@@ -48,7 +48,7 @@ package org.scilab.forge.jlatexmath;
 import java.awt.Font;
 
 /**
- * The string rendering is made in using Java Graphics2D.drawString.
+ * The string rendering is made in using Java.
  */
 public class JavaFontRenderingAtom extends Atom {
 

@@ -48,10 +48,12 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.BasicStroke;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.RectF;
+
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 
 /**
@@ -61,10 +63,10 @@ import java.util.LinkedList;
  * that can possibly be shifted (up, down, left or right). Child boxes can also be positioned
  * outside their parent's box (defined by it's dimensions).
  * <p>
- * Subclasses must implement the abstract {@link #draw(Graphics2D, float, float)} method
+ * Subclasses must implement the abstract {@link #draw(Canvas, float, float)} method
  * (that paints the box). <b> This implementation must start with calling the method
- * {@link #startDraw(Graphics2D, float, float)} and end with calling the method
- * {@link #endDraw(Graphics2D)} to set and restore the color's that must be used for
+ * {@link #startDraw(Canvas, float, float)} and end with calling the method
+ * {@link #endDraw(Canvas)} to set and restore the color's that must be used for
  * painting the box and to draw the background!</b> They must also implement the abstract
  * {@link #getLastFontId()} method (the last font
  * that will be used when this box will be painted).
@@ -73,21 +75,28 @@ public abstract class Box {
 
     public static boolean DEBUG = false;
 
+    protected final Paint paint;
+    protected final Paint bgPaint;
+    protected final RectF rectF;
+
+    private final Paint debugPaint;
+
     /**
      * The foreground color of the whole box. Child boxes can override this color.
      * If it's null and it has a parent box, the foreground color of the parent will
      * be used. If it has no parent, the foreground color of the component on which it
      * will be painted, will be used.
      */
-    protected Color foreground;
+    protected final Color foreground;
 
     /**
      * The background color of the whole box. Child boxes can paint a background on top of
      * this background. If it's null, no background will be painted.
      */
-    protected Color background;
+    protected final Color background;
 
-    private Color prevColor; // used temporarily in startDraw and endDraw
+    private int prevColor; // used temporarily in startDraw and endDraw
+    protected int currentColor = Color.magenta.getColor();
 
     /**
      * The width of this box, i.e. the value that will be used for further
@@ -162,8 +171,23 @@ public abstract class Box {
      * @param bg the background color
      */
     protected Box(Color fg, Color bg) {
-        foreground = fg;
+        debugPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        debugPaint.setStrokeCap(Paint.Cap.BUTT);
+        debugPaint.setStrokeJoin(Paint.Join.MITER);
+
+        bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        if (bg != null) {
+            bgPaint.setColor(bg.getColor());
+        }
         background = bg;
+
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        if (fg != null) {
+            paint.setColor(fg.getColor());
+        }
+        foreground = fg;
+
+        rectF = new RectF();
     }
 
     public void setParent(Box parent) {
@@ -261,11 +285,11 @@ public abstract class Box {
     /**
      * Paints this box at the given coordinates using the given graphics context.
      *
-     * @param g2 the graphics (2D) context to use for painting
+     * @param canvas the graphics context to use for painting
      * @param x the x-coordinate
      * @param y the y-coordinate
      */
-    public abstract void draw(Graphics2D g2, float x, float y);
+    public abstract void draw(Canvas canvas, float x, float y);
 
     /**
      * Get the id of the font that will be used the last when this box will be painted.
@@ -278,69 +302,72 @@ public abstract class Box {
      * Stores the old color setting, draws the background of the box (if not null)
      * and sets the foreground color (if not null).
      *
-     * @param g2 the graphics (2D) context
+     * @param canvas the graphics context
      * @param x the x-coordinate
      * @param y the y-coordinate
      */
-    protected void startDraw(Graphics2D g2, float x, float y) {
+    protected void startDraw(Canvas canvas, float x, float y) {
         // old color
-        prevColor = g2.getColor();
+        prevColor = currentColor;
         if (background != null) { // draw background
-            g2.setColor(background);
-            g2.fill(new Rectangle2D.Float(x, y - height, width, height + depth));
+            rectF.set(x, y - height, width, height + depth);
+            canvas.drawRect(rectF, bgPaint);
         }
-        if (foreground == null) {
-            g2.setColor(prevColor); // old foreground color
-        } else {
-            g2.setColor(foreground); // overriding foreground color
+        if (foreground != null) {
+            currentColor = foreground.getColor();
         }
-        drawDebug(g2, x, y);
+        drawDebug(canvas, x, y);
     }
 
-    protected void drawDebug(Graphics2D g2, float x, float y, boolean showDepth) {
+    protected void drawDebug(Canvas canvas, float x, float y, boolean showDepth) {
         if (DEBUG) {
             if (markForDEBUG != null) {
-                Color c = g2.getColor();
-                g2.setColor(markForDEBUG);
-                g2.fill(new Rectangle2D.Float(x, y - height, width, height + depth));
-                g2.setColor(c);
+                debugPaint.setColor(markForDEBUG.getColor());
+                debugPaint.setStyle(Paint.Style.FILL);
+                rectF.set(x, y - height, width, height + depth);
+                canvas.drawRect(rectF, debugPaint);
             }
-            g2.setStroke(new BasicStroke((float) (Math.abs(1 / g2.getTransform().getScaleX())), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
+            float[] m = new float[9];
+            canvas.getMatrix().getValues(m);
+            debugPaint.setStrokeWidth(Math.abs(1 / m[Matrix.MSCALE_X]));
+            debugPaint.setStyle(Paint.Style.STROKE);
+            debugPaint.setColor(currentColor);
             if (width < 0) {
                 x += width;
                 width = -width;
             }
-            g2.draw(new Rectangle2D.Float(x, y - height, width, height + depth));
+            rectF.set(x, y - height, width, height + depth);
+            canvas.drawRect(rectF, debugPaint);
             if (showDepth) {
-                Color c = g2.getColor();
-                g2.setColor(Color.RED);
 		if (depth > 0) {
-		    g2.fill(new Rectangle2D.Float(x, y, width, depth));
-		    g2.setColor(c);
-		    g2.draw(new Rectangle2D.Float(x, y, width, depth));
+                    rectF.set(x, y, width, depth);
 		} else if (depth < 0) {
-		    g2.fill(new Rectangle2D.Float(x, y + depth, width, -depth));
-		    g2.setColor(c);
-		    g2.draw(new Rectangle2D.Float(x, y + depth, width, -depth));
+                    rectF.set(x, y + depth, width, -depth);
 		} else {
-		    g2.setColor(c);
-		}
+                    return;
+                }
+                debugPaint.setColor(Color.RED.getColor());
+                debugPaint.setStyle(Paint.Style.FILL);
+                canvas.drawRect(rectF, debugPaint);
+                debugPaint.setColor(currentColor);
+                debugPaint.setStyle(Paint.Style.STROKE);
+                canvas.drawRect(rectF, debugPaint);
             }
         }
     }
 
-    protected void drawDebug(Graphics2D g2, float x, float y) {
+    protected void drawDebug(Canvas canvas, float x, float y) {
         if (DEBUG) {
-            drawDebug(g2, x, y, true);
+            drawDebug(canvas, x, y, true);
         }
     }
 
     /**
      * Restores the previous color setting.
      *
-     * @param g2 the graphics (2D) context
+     * @param canvas the graphics context
      */
-    protected void endDraw(Graphics2D g2) {
-        g2.setColor(prevColor);
+    protected void endDraw(Canvas canvas) {
+        currentColor = prevColor;
     }
 }

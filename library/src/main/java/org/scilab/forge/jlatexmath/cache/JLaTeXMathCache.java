@@ -45,15 +45,15 @@
 
 package org.scilab.forge.jlatexmath.cache;
 
+import android.graphics.Canvas;
+
 import org.scilab.forge.jlatexmath.ParseException;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.geom.AffineTransform;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
@@ -67,7 +67,6 @@ import java.util.concurrent.ConcurrentMap;
  */
 public final class JLaTeXMathCache {
 
-    private static final AffineTransform identity = new AffineTransform();
     private static ConcurrentMap<CachedTeXFormula, SoftReference<CachedImage>> cache = new ConcurrentHashMap<CachedTeXFormula, SoftReference<CachedImage>>(128);
     private static int max = Integer.MAX_VALUE;
     private static ReferenceQueue queue = new ReferenceQueue();
@@ -178,21 +177,21 @@ public final class JLaTeXMathCache {
      * @param inset the inset to add on the top, bottom, left and right
      * @return the key in the map
      */
-    public static Object paintCachedTeXFormula(String f, int style, int type, int size, int inset, Color fgcolor, Graphics2D g) throws ParseException  {
-        return paintCachedTeXFormula(new CachedTeXFormula(f, style, type, size, inset, fgcolor), g);
+    public static Object paintCachedTeXFormula(String f, int style, int type, int size, int inset, Color fgcolor, Canvas canvas) throws ParseException  {
+        return paintCachedTeXFormula(new CachedTeXFormula(f, style, type, size, inset, fgcolor), canvas);
     }
 
-    public static Object paintCachedTeXFormula(String f, int style, int size, int inset, Graphics2D g) throws ParseException  {
-        return paintCachedTeXFormula(f, style, 0, size, inset, null, g);
+    public static Object paintCachedTeXFormula(String f, int style, int size, int inset, Canvas canvas) throws ParseException  {
+        return paintCachedTeXFormula(f, style, 0, size, inset, null, canvas);
     }
 
     /**
      * Paint a cached formula
      * @param o an Object to identify the image in the cache
-     * @param g the graphics where to paint the image
+     * @param canvas the graphics where to paint the image
      * @return the key in the map
      */
-    public static Object paintCachedTeXFormula(Object o, Graphics2D g) throws ParseException  {
+    public static Object paintCachedTeXFormula(Object o, Canvas canvas) throws ParseException  {
         if (o == null || !(o instanceof CachedTeXFormula)) {
             return null;
         }
@@ -201,7 +200,7 @@ public final class JLaTeXMathCache {
         if (img == null || img.get() == null) {
             img = makeImage(cached);
         }
-        g.drawImage(img.get().image, identity, null);
+        canvas.drawBitmap(img.get().image.getBitmap(), 0, 0, null);
 
         return cached;
     }
@@ -244,10 +243,9 @@ public final class JLaTeXMathCache {
         TeXFormula formula = new TeXFormula(cached.f);
         TeXIcon icon = formula.createTeXIcon(cached.style, cached.size, cached.type, cached.fgcolor);
         icon.setInsets(new Insets(cached.inset, cached.inset, cached.inset, cached.inset));
-        Image image = new Image(icon.getIconWidth(), icon.getIconHeight(), Image.TYPE_INT_ARGB);
-        Graphics2D g2 = image.createGraphics();
-        icon.paintIcon(g2, 0, 0);
-        g2.dispose();
+        Image image = new Image(icon.getIconWidth(), icon.getIconHeight());
+        Canvas canvas = new Canvas(image.getBitmap());
+        icon.paintIcon(canvas, 0, 0);
         cached.setDimensions(icon.getIconWidth(), icon.getIconHeight(), icon.getIconDepth());
         SoftReference<CachedImage> img = new SoftReference<CachedImage>(new CachedImage(image, cached), queue);
 

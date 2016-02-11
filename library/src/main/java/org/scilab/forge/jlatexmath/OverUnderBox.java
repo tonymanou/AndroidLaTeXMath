@@ -46,8 +46,7 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
+import android.graphics.Canvas;
 
 /**
  * A box representing another box with a delimiter box and a script box above or under it, 
@@ -96,40 +95,41 @@ public class OverUnderBox extends Box {
 	    + (!over && script != null ? script.height + script.depth + kern : 0);
     }
 
-    public void draw(Graphics2D g2, float x, float y) {
-	drawDebug(g2, x, y);
-	base.draw(g2, x, y);
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
+	drawDebug(canvas, x, y);
+	base.draw(canvas, x, y);
 
 	float yVar = y - base.height - del.getWidth();
 	del.setDepth(del.getHeight() + del.getDepth());
 	del.setHeight(0);
 	if (over) { // draw delimiter and script above base box
-	    double transX = x + (del.height + del.depth) * 0.75, transY = yVar;
-	    AffineTransform oldAt = g2.getTransform();
-	    g2.translate(transX, transY);
-	    g2.rotate(Math.PI / 2);
-	    del.draw(g2, 0, 0);
-	    g2.setTransform(oldAt);
+	    double transX = x + (del.height + del.depth) * 0.75;
+            int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+	    canvas.translate((float) transX, yVar);
+	    canvas.rotate((float) (Math.PI / 2));
+	    del.draw(canvas, 0, 0);
+	    canvas.restoreToCount(save);
          
 	    // draw superscript
 	    if (script != null) {
-		script.draw(g2, x, yVar - kern - script.depth);
+		script.draw(canvas, x, yVar - kern - script.depth);
 	    }
 	}
 
 	yVar = y + base.depth;
 	if (!over) { // draw delimiter and script under base box
 	    double transX = x + (del.getHeight() + del.depth) * 0.75, transY = yVar;
-	    AffineTransform oldAt = g2.getTransform();
-	    g2.translate(transX, transY);
-	    g2.rotate(Math.PI / 2);
-	    del.draw(g2, 0, 0);
-	    g2.setTransform(oldAt);
+            int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+	    canvas.translate((float) transX, (float) transY);
+	    canvas.rotate((float) (Math.PI / 2));
+	    del.draw(canvas, 0, 0);
+	    canvas.restoreToCount(save);
 	    yVar += del.getWidth();
 	  
 	    // draw subscript
 	    if (script != null) {
-		script.draw(g2, x, yVar + kern + script.height);
+		script.draw(canvas, x, yVar + kern + script.height);
 	    }
 	}
     }

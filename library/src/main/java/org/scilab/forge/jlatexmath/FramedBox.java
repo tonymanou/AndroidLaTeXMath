@@ -45,10 +45,10 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.BasicStroke;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 
 /**
  * A box representing a rotated box.
@@ -56,7 +56,7 @@ import java.awt.geom.Rectangle2D;
 public class FramedBox extends Box {
     
     protected Box box;
-    protected float thickness;
+    protected final float thickness;
     protected float space;
     private Color line;
     private Color bg;
@@ -69,33 +69,37 @@ public class FramedBox extends Box {
 	this.shift = box.shift;
 	this.thickness = thickness;
 	this.space = space;
+
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(thickness);
+        paint.setStrokeCap(Paint.Cap.BUTT);
+        paint.setStrokeJoin(Paint.Join.MITER);
     }
 
     public FramedBox(Box box, float thickness, float space, Color line, Color bg) {
 	this(box, thickness, space);
 	this.line = line;
 	this.bg = bg;
+
+        paint.setColor(line.getColor());
+        bgPaint.setColor(bg.getColor());
     }
 
-    public void draw(Graphics2D g2, float x, float y) {
-	g2.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
-	float th = thickness / 2;
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
+        float th = thickness / 2f;
+        rectF.set(x + th, y - height + th, width - thickness, height + depth - thickness);
 	if (bg != null) {
-	    Color prev = g2.getColor();
-	    g2.setColor(bg);
-	    g2.fill(new Rectangle2D.Float(x + th, y - height + th, width - thickness, height + depth - thickness));
-	    g2.setColor(prev);
+            canvas.drawRect(rectF, bgPaint);
 	}
 	if (line != null) {
-	    Color prev = g2.getColor();
-	    g2.setColor(line);
-	    g2.draw(new Rectangle2D.Float(x + th, y - height + th, width - thickness, height + depth - thickness));
-	    g2.setColor(prev);
+            paint.setColor(line.getColor());
 	} else {
-	    g2.draw(new Rectangle2D.Float(x + th, y - height + th, width - thickness, height + depth - thickness));
+            paint.setColor(currentColor);
 	}
+        canvas.drawRect(rectF, paint);
 	//drawDebug(g2, x, y);
-	box.draw(g2, x + space + thickness, y);
+        box.draw(canvas, x + space + thickness, y);
     }
 
     public int getLastFontId() {

@@ -45,9 +45,8 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.geom.RoundRectangle2D;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 
 /**
  * A box representing a rotated box.
@@ -58,14 +57,16 @@ public class OvalBox extends FramedBox {
 
     public OvalBox(FramedBox fbox) {
 	super(fbox.box, fbox.thickness, fbox.space);
+        paint.setStyle(Paint.Style.STROKE);
     }
 
-    public void draw(Graphics2D g2, float x, float y) {
-	box.draw(g2, x + space + thickness, y);
-	g2.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
+        box.draw(canvas, x + space + thickness, y);
 	float th = thickness / 2;
+        rectF.set(x + th, y - height + th, width - thickness, height + depth - thickness);
 	float r = 0.5f * Math.min(width - thickness, height + depth - thickness);
-	g2.draw(new RoundRectangle2D.Float(x + th, y - height + th, width - thickness, height + depth - thickness, r, r));
+        canvas.drawRoundRect(rectF, r, r, paint);
 	//drawDebug(g2, x, y);
     }
 

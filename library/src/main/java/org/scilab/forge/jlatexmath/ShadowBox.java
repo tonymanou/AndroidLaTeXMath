@@ -45,9 +45,9 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 
 /**
  * A box representing a rotated box.
@@ -63,15 +63,23 @@ public class ShadowBox extends FramedBox {
 	width += shadowRule;
     }
 
-    public void draw(Graphics2D g2, float x, float y) {
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
 	float th = thickness / 2;
-	box.draw(g2, x + space + thickness, y);
-	g2.setStroke(new BasicStroke(thickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
-	g2.draw(new Rectangle2D.Float(x + th, y - height + th, width - shadowRule - thickness, height + depth - shadowRule - thickness));
-	float penth = (float) Math.abs(1 / g2.getTransform().getScaleX());
-	g2.setStroke(new BasicStroke(penth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
-	g2.fill(new Rectangle2D.Float(x + shadowRule - penth, y + depth - shadowRule - penth, width - shadowRule, shadowRule));
-	g2.fill(new Rectangle2D.Float(x + width - shadowRule - penth, y - height + th + shadowRule, shadowRule, depth + height - 2 * shadowRule - th));
+        box.draw(canvas, x + space + thickness, y);
+        paint.setStrokeWidth(thickness);
+        paint.setStyle(Paint.Style.STROKE);
+        rectF.set(x + th, y - height + th, width - shadowRule - thickness, height + depth - shadowRule - thickness);
+        canvas.drawRect(rectF, paint);
+        float[] m = new float[9];
+        canvas.getMatrix().getValues(m);
+        float penth = Math.abs(1 / m[Matrix.MSCALE_X]);
+        paint.setStrokeWidth(penth);
+        paint.setStyle(Paint.Style.FILL);
+        rectF.set(x + shadowRule - penth, y + depth - shadowRule - penth, width - shadowRule, shadowRule);
+        canvas.drawRect(rectF, paint);
+        rectF.set(x + width - shadowRule - penth, y - height + th + shadowRule, shadowRule, depth + height - 2 * shadowRule - th);
+        canvas.drawRect(rectF, paint);
 	//drawDebug(g2, x, y);
     }
 
@@ -81,7 +89,7 @@ public class ShadowBox extends FramedBox {
 }
 /*
 
-    public void draw(Graphics2D g2, float x, float y) {
+    public void draw(Canvas canvas, float x, float y) {
 	float th = thickness / 2;
 	float sh = shadowRule / 2;
 	box.draw(g2, x + space + thickness, y);

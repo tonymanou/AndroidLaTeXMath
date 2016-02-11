@@ -45,10 +45,9 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Graphics2D;
+import android.graphics.Canvas;
+
 import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 
 /**
  * A box representing a box containing a graphics.
@@ -72,33 +71,22 @@ public class GraphicsBox extends Box {
 	shift = 0;
 	switch (interpolation) {
 	case BILINEAR :
-	    interp = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
-	    break;
 	case NEAREST_NEIGHBOR :
-	    interp = RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR;
-	    break;
 	case BICUBIC :
-	    interp = RenderingHints.VALUE_INTERPOLATION_BICUBIC;
+            interp = interpolation;
 	    break;
 	default :
 	    interp = null;
 	}
     }
-   
-    public void draw(Graphics2D g2, float x, float y) {
-	AffineTransform oldAt = g2.getTransform();
-	Object oldKey = null;
-	if (interp != null) {
-	    oldKey = g2.getRenderingHint(RenderingHints.KEY_INTERPOLATION);
-	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, interp);
-	}
-	g2.translate(x, y - height);
-	g2.scale(scl, scl);
-	g2.drawImage(image, 0, 0, null);
-	g2.setTransform(oldAt);
-	if (oldKey != null) {
-	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, oldKey);
-	}
+
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
+        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        canvas.translate(x, y - height);
+        canvas.scale(scl, scl);
+        canvas.drawBitmap(image.getBitmap(), 0, 0, null);
+        canvas.restoreToCount(save);
     }
     
     public int getLastFontId() {

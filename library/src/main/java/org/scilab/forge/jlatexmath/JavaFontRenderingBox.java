@@ -45,12 +45,11 @@
 
 package org.scilab.forge.jlatexmath;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.font.TextAttribute;
-import java.awt.font.TextLayout;
-import java.awt.geom.Rectangle2D;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -59,13 +58,9 @@ import java.util.Map;
  */
 public class JavaFontRenderingBox extends Box {
 
-    private static final Graphics2D TEMPGRAPHIC = new Image(1, 1, Image.TYPE_INT_ARGB).createGraphics();
-
     private static Font font = new Font("Serif", Font.PLAIN, 10);
 
     private String str;
-    private TextLayout text;
-    private float size;
     private static TextAttribute KERNING;
     private static Integer KERNING_ON;
     private static TextAttribute LIGATURES;
@@ -82,7 +77,6 @@ public class JavaFontRenderingBox extends Box {
 
     public JavaFontRenderingBox(String str, int type, float size, Font f, boolean kerning) {
         this.str = str;
-        this.size = size;
 
         if (kerning && KERNING != null) {
             Map<TextAttribute, Object> map = new Hashtable<TextAttribute, Object>();
@@ -91,11 +85,13 @@ public class JavaFontRenderingBox extends Box {
             f = f.deriveFont(map);
         }
 
-        this.text = new TextLayout(str, f.deriveFont(type), TEMPGRAPHIC.getFontRenderContext());
-        Rectangle2D rect = text.getBounds();
-        this.height = (float) (-rect.getY() * size / 10);
-        this.depth = (float) (rect.getHeight() * size / 10) - this.height;
-        this.width = (float) ((rect.getWidth() + rect.getX() + 0.4f) * size / 10);
+        paint.setTextSize(size);
+        paint.setTypeface(f.deriveFont(type).getTypeFace());
+
+        Paint.FontMetrics metrics = paint.getFontMetrics();
+        this.height = -metrics.ascent;
+        this.depth = metrics.descent + metrics.leading + metrics.ascent;
+        this.width = paint.measureText(str) + 0.4f;
     }
 
     public JavaFontRenderingBox(String str, int type, float size) {
@@ -106,13 +102,13 @@ public class JavaFontRenderingBox extends Box {
         font = new Font(name, Font.PLAIN, 10);
     }
 
-    public void draw(Graphics2D g2, float x, float y) {
-        drawDebug(g2, x, y);
-        g2.translate(x, y);
-        g2.scale(0.1 * size, 0.1 * size);
-        text.draw(g2, 0, 0);
-        g2.scale(10 / size, 10 / size);
-        g2.translate(-x, -y);
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
+        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        drawDebug(canvas, x, y);
+        canvas.translate(x, y);
+        canvas.drawText(str, 0, 0, paint);
+        canvas.restoreToCount(save);
     }
 
     public int getLastFontId() {

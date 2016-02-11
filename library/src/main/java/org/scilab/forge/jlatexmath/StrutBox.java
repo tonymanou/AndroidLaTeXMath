@@ -46,7 +46,7 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Graphics2D;
+import android.graphics.Canvas;
 
 /**
  * A box representing whitespace.
@@ -59,8 +59,9 @@ public class StrutBox extends Box {
         depth = d;
         shift = s;
     }
-    
-    public void draw(Graphics2D g2, float x, float y) {
+
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
         // no visual effect
     }
     

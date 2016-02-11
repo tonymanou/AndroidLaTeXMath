@@ -48,12 +48,11 @@
 
 package org.scilab.forge.jlatexmath;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -207,15 +206,6 @@ public class TeXFormula {
      */
     public static void setDPITarget(float dpi) {
         PIXELS_PER_POINT = dpi / 72f;
-    }
-
-    /**
-     * Set the default target DPI to the screen dpi (only if we're in non-headless mode)
-     */
-    public static void setDefaultDPI() {
-        if (!GraphicsEnvironment.isHeadless()) {
-            setDPITarget((float) Toolkit.getDefaultToolkit().getScreenResolution());
-        }
     }
 
     // the root atom of the "atom tree" that represents the formula
@@ -386,7 +376,7 @@ public class TeXFormula {
     }
 
     /**
-     * @param a formula
+     * @param formula formula
      * @return a partial TeXFormula containing the valid part of formula
      */
     public static TeXFormula getPartialTeXFormula(String formula) {
@@ -863,53 +853,34 @@ public class TeXFormula {
      * @param formula the formula
      * @param style the style
      * @param size the size
-     * @param transparency, if true the background is transparent
      * @return the generated image
      */
-    public static Image createBufferedImage(String formula, int style, float size, Color fg, Color bg) throws ParseException {
+    public static Bitmap createBufferedImage(String formula, int style, float size, Color fg, Color bg) throws ParseException {
         TeXFormula f = new TeXFormula(formula);
-        TeXIcon icon = f.createTeXIcon(style, size);
-        icon.setInsets(new Insets(2, 2, 2, 2));
-        int w = icon.getIconWidth(), h = icon.getIconHeight();
-
-        Image image = new Image(w, h, bg == null ? Image.TYPE_INT_ARGB : Image.TYPE_INT_RGB);
-        Graphics2D g2 = image.createGraphics();
-        if (bg != null) {
-            g2.setColor(bg);
-            g2.fillRect(0, 0, w, h);
-        }
-
-        icon.setForeground(fg == null ? Color.BLACK : fg);
-        icon.paintIcon(g2, 0, 0);
-        g2.dispose();
-
-        return image;
+        return f.createBufferedImage(style, size, fg, bg);
     }
 
     /**
-     * @param formula the formula
      * @param style the style
      * @param size the size
-     * @param transparency, if true the background is transparent
      * @return the generated image
      */
-    public Image createBufferedImage(int style, float size, Color fg, Color bg) throws ParseException {
+    public Bitmap createBufferedImage(int style, float size, Color fg, Color bg) throws ParseException {
         TeXIcon icon = createTeXIcon(style, size);
         icon.setInsets(new Insets(2, 2, 2, 2));
         int w = icon.getIconWidth(), h = icon.getIconHeight();
 
-        Image image = new Image(w, h, bg == null ? Image.TYPE_INT_ARGB : Image.TYPE_INT_RGB);
-        Graphics2D g2 = image.createGraphics();
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         if (bg != null) {
-            g2.setColor(bg);
-            g2.fillRect(0, 0, w, h);
+            bitmap.eraseColor(bg.getColor());
         }
 
-        icon.setForeground(fg == null ? Color.BLACK : fg);
-        icon.paintIcon(g2, 0, 0);
-        g2.dispose();
+        Canvas canvas = new Canvas(bitmap);
 
-        return image;
+        icon.setForeground(fg == null ? Color.BLACK : fg);
+        icon.paintIcon(canvas, 0, 0);
+
+        return bitmap;
     }
 
     public void setDEBUG(boolean b) {

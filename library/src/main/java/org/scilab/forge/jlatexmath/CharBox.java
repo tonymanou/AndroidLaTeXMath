@@ -46,9 +46,8 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
+import android.graphics.Canvas;
+import android.graphics.Typeface;
 
 /**
  * A box representing a single character.
@@ -68,26 +67,29 @@ public class CharBox extends Box {
      */
     public CharBox(Char c) {
 	cf = c.getCharFont();
-	size = c.getMetrics().getSize();
+        float fontSize = c.getMetrics().getSize();
+        size = fontSize;
+        paint.setTextSize(fontSize);
 	width = c.getWidth();
 	height = c.getHeight();
 	depth = c.getDepth();
     }
-    
-    public void draw(Graphics2D g2, float x, float y) {
-	drawDebug(g2, x, y);
-	AffineTransform at = g2.getTransform();
-        g2.translate(x, y);
-	Font font = FontInfo.getFont(cf.fontId);
+
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
+        drawDebug(canvas, x, y);
+        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        canvas.translate(x, y);
+        Typeface font = FontInfo.getFont(cf.fontId).getTypeFace();
         if (size != 1) {
-	    g2.scale(size, size);
+            canvas.scale(size, size);
 	}
-        if (g2.getFont() != font) {
-	    g2.setFont(font);
+        if (paint.getTypeface() != font) {
+            paint.setTypeface(font);
 	}
 	arr[0] = cf.c;
-	g2.drawChars(arr, 0, 1, 0, 0);
-	g2.setTransform(at);
+        canvas.drawText(arr, 0, 1, 0, 0, paint);
+        canvas.restoreToCount(save);
     }
     
     public int getLastFontId() {

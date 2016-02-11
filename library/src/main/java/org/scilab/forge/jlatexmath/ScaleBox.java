@@ -45,7 +45,7 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Graphics2D;
+import android.graphics.Canvas;
 
 /**
  * A box representing a scaled box.
@@ -70,17 +70,18 @@ public class ScaleBox extends Box {
 	this(b, (double) factor, (double) factor);
 	this.factor = factor;
     }
-    
-    public void draw(Graphics2D g2, float x, float y) {
-	drawDebug(g2, x, y);
+
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
+        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        drawDebug(canvas, x, y);
 	if (xscl != 0 && yscl != 0) {
 	    float dec = xscl < 0 ? width : 0;
-	    g2.translate(x + dec, y);
-	    g2.scale(xscl, yscl);
-	    box.draw(g2, 0, 0);
-	    g2.scale(1 / xscl, 1 / yscl);
-	    g2.translate(-x - dec, -y);
-	}
+            canvas.translate(x + dec, y);
+            canvas.scale((float) xscl, (float) yscl);
+            box.draw(canvas, 0, 0);
+        }
+        canvas.restoreToCount(save);
     }
 
     public int getLastFontId() {

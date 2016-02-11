@@ -45,8 +45,7 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Point2D;
+import android.graphics.Canvas;
 
 /**
  * A box representing a rotated box.
@@ -93,7 +92,7 @@ public class RotateBox extends Box {
         depth = -ymin - shiftY;
     }
 
-    public RotateBox(Box b, double angle, Point2D.Float origin) {
+    public RotateBox(Box b, double angle, Point origin) {
         this(b, angle, origin.x, origin.y);
     }
 
@@ -138,8 +137,8 @@ public class RotateBox extends Box {
         return BBL;
     }
 
-    private static Point2D.Float calculateShift(Box b, int option) {
-        Point2D.Float p = new Point2D.Float(0, -b.depth);
+    private static Point calculateShift(Box b, int option) {
+        Point p = new Point(0, -b.depth);
         switch (option) {
         case BL :
             p.x = 0;
@@ -195,18 +194,31 @@ public class RotateBox extends Box {
         return p;
     }
 
-    public void draw(Graphics2D g2, float x, float y) {
-        drawDebug(g2, x, y);
-        box.drawDebug(g2, x, y, true);
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
+        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        drawDebug(canvas, x, y);
+        box.drawDebug(canvas, x, y, true);
         y -= shiftY;
         x += shiftX - xmin;
-        g2.rotate(-angle, x, y);
-        box.draw(g2, x, y);
-        box.drawDebug(g2, x, y, true);
-        g2.rotate(angle, x, y);
+        canvas.rotate((float) -angle, x, y);
+        box.draw(canvas, x, y);
+        box.drawDebug(canvas, x, y, true);
+        canvas.restoreToCount(save);
     }
 
     public int getLastFontId() {
         return box.getLastFontId();
+    }
+
+    private static class Point {
+
+        public float x;
+        public float y;
+
+        public Point(int x, float y) {
+            this.x = x;
+            this.y = y;
+        }
     }
 }

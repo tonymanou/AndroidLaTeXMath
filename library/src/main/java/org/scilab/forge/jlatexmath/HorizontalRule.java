@@ -46,53 +46,49 @@
 
 package org.scilab.forge.jlatexmath;
 
+import android.graphics.Canvas;
+
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
 
 /**
  * A box representing a horizontal line.
  */
 public class HorizontalRule extends Box {
-    
-    private Color color = null;
-    private float speShift = 0;;
+
+    private float speShift = 0;
     
     public HorizontalRule(float thickness, float width, float s) {
-	height = thickness;
-	this.width = width;
-	shift = s;
+        this(thickness, width, s, true, null);
     }
 
     public HorizontalRule(float thickness, float width, float s, boolean trueShift) {
-	height = thickness;
-	this.width = width;
-	if (trueShift) {
-	    shift = s;
-	} else {
-	    shift = 0;
-	    speShift = s;
-	}	
+        this(thickness, width, s, trueShift, null);
     }
 
     public HorizontalRule(float thickness, float width, float s, Color c) {
-	height = thickness;
-	this.width = width;
-	color = c;
-	shift = s;
+        this(thickness, width, s, true, c);
     }
 
-    public void draw(Graphics2D g2, float x, float y) {
-	Color old = g2.getColor();
-	if (color != null)
-	    g2.setColor(color);
-	
-	if (speShift == 0) {
-	    g2.fill(new Rectangle2D.Float(x, y - height, width, height));
+    private HorizontalRule(float thickness, float width, float s, boolean trueShift, Color c) {
+        super(c, null);
+        height = thickness;
+        this.width = width;
+        if (trueShift) {
+            shift = s;
+        } else {
+            shift = 0;
+            speShift = s;
+        }
+    }
+
+    @Override
+    public void draw(Canvas canvas, float x, float y) {
+        if (speShift == 0) {
+            rectF.set(x, y - height, width, height);
 	} else {
-	    g2.fill(new Rectangle2D.Float(x, y - height + speShift, width, height));
+            rectF.set(x, y - height + speShift, width, height);
 	}
-	g2.setColor(old);
+        canvas.drawRect(rectF, paint);
     }
     
     public int getLastFontId() {

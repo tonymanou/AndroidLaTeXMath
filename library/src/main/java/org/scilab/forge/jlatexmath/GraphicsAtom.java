@@ -45,14 +45,7 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Label;
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Map;
 
 /**
@@ -61,38 +54,13 @@ import java.util.Map;
 public class GraphicsAtom extends Atom {
     
     private Image image = null;
-    private Image bimage;
-    private Label c;
-    private int w, h;
 
     private Atom base;
     private boolean first = true;
     private int interp = -1;
 
     public GraphicsAtom(String path, String option) {
-	File f = new File(path);
-	if (!f.exists()) {
-	    try {
-		URL url = new URL(path);
-		image = Toolkit.getDefaultToolkit().getImage(url);
-	    } catch (MalformedURLException e) {
-		image = null;
-	    }
-	} else {
-	    image = Toolkit.getDefaultToolkit().getImage(path);
-	}
-	
-	if (image != null) {
-	    c = new Label();
-	    MediaTracker tracker = new MediaTracker(c);
-	    tracker.addImage(image, 0);
-	    try {
-		tracker.waitForID(0);
-	    } catch (InterruptedException e) {
-		image = null;
-	    }
-	}
-	draw();
+        // TODO load image
 	buildAtom(option);
     }
 
@@ -120,17 +88,6 @@ public class GraphicsAtom extends Atom {
 	    }
 	}
     }
-	
-    public void draw() {
-	if (image != null) {
-	    w = image.getWidth(c);
-	    h = image.getHeight(c);
-	    bimage = new Image(w, h, Image.TYPE_INT_ARGB);
-	    Graphics2D g2d = bimage.createGraphics();
-	    g2d.drawImage(image, 0, 0, null);
-	    g2d.dispose();
-	}
-    }
 
     public Box createBox(TeXEnvironment env) {
 	if (image != null) {
@@ -139,9 +96,9 @@ public class GraphicsAtom extends Atom {
 		return base.createBox(env);
 	    } else {
 		env.isColored = true;
-		float width = w * SpaceAtom.getFactor(TeXConstants.UNIT_PIXEL, env);
-		float height = h * SpaceAtom.getFactor(TeXConstants.UNIT_PIXEL, env);
-		return new GraphicsBox(bimage, width, height, env.getSize(), interp);
+                float width = image.getWidth() * SpaceAtom.getFactor(TeXConstants.UNIT_PIXEL, env);
+                float height = image.getHeight() * SpaceAtom.getFactor(TeXConstants.UNIT_PIXEL, env);
+                return new GraphicsBox(image, width, height, env.getSize(), interp);
 	    }
 	}
 

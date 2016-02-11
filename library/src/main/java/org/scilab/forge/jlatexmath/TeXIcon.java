@@ -49,11 +49,10 @@
 
 package org.scilab.forge.jlatexmath;
 
+import android.graphics.Canvas;
+
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Insets;
-import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 
 /**
  * An icon implementation that will paint the TeXFormula
@@ -237,15 +236,11 @@ public class TeXIcon {
     /**
      * Paint the {@link TeXFormula} that created this icon.
      */
-    public void paintIcon(Graphics2D g2, int x, int y) {
-        g2.scale(size, size); // the point size
-        if (fg != null) {
-            g2.setColor(fg);
-        } else {
-            g2.setColor(defaultColor);
-        }
+    public void paintIcon(Canvas canvas, int x, int y) {
+        canvas.scale(size, size); // the point size
+        box.currentColor = (fg != null ? fg : defaultColor).getColor();
 
         // draw formula box
-        box.draw(g2, (x + insets.left) / size, (y + insets.top) / size+ box.getHeight());
+        box.draw(canvas, (x + insets.left) / size, (y + insets.top) / size+ box.getHeight());
     }
 }
