@@ -50,9 +50,9 @@ package org.scilab.forge.jlatexmath;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 import java.awt.Color;
-import java.awt.Insets;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -867,7 +867,7 @@ public class TeXFormula {
      */
     public Bitmap createBufferedImage(int style, float size, Color fg, Color bg) throws ParseException {
         TeXIcon icon = createTeXIcon(style, size);
-        icon.setInsets(new Insets(2, 2, 2, 2));
+        icon.setInsets(new Rect(2, 2, 2, 2));
         int w = icon.getIconWidth(), h = icon.getIconHeight();
 
         Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);

@@ -47,13 +47,13 @@ package org.scilab.forge.jlatexmath.cache;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 import org.scilab.forge.jlatexmath.ParseException;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
 import java.awt.Color;
-import java.awt.Insets;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
@@ -242,7 +242,7 @@ public final class JLaTeXMathCache {
     private static SoftReference<CachedImage> makeImage(CachedTeXFormula cached) throws ParseException {
         TeXFormula formula = new TeXFormula(cached.f);
         TeXIcon icon = formula.createTeXIcon(cached.style, cached.size, cached.type, cached.fgcolor);
-        icon.setInsets(new Insets(cached.inset, cached.inset, cached.inset, cached.inset));
+        icon.setInsets(new Rect(cached.inset, cached.inset, cached.inset, cached.inset));
         Bitmap bitmap = Bitmap.createBitmap(icon.getIconWidth(), icon.getIconHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         icon.paintIcon(canvas, 0, 0);

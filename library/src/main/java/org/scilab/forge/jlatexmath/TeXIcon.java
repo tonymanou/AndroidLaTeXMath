@@ -50,9 +50,9 @@
 package org.scilab.forge.jlatexmath;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 import java.awt.Color;
-import java.awt.Insets;
 
 /**
  * An icon implementation that will paint the TeXFormula
@@ -74,7 +74,7 @@ public class TeXIcon {
 
     private final float size;
 
-    private Insets insets = new Insets(0, 0, 0, 0);
+    private Rect insets = new Rect(0, 0, 0, 0);
 
     private Color fg = null;
 
@@ -123,7 +123,7 @@ public class TeXIcon {
      *
      * @return the insets
      */
-    public Insets getInsets() {
+    public Rect getInsets() {
         return insets;
     }
 
@@ -133,7 +133,7 @@ public class TeXIcon {
      * @param insets the insets
      * @param trueValues true to force the true values
      */
-    public void setInsets(Insets insets, boolean trueValues) {
+    public void setInsets(Rect insets, boolean trueValues) {
         this.insets = insets;
         if (!trueValues) {
             this.insets.top += (int)(0.18f * size);
@@ -148,7 +148,7 @@ public class TeXIcon {
      *
      * @param insets the insets
      */
-    public void setInsets(Insets insets) {
+    public void setInsets(Rect insets) {
         setInsets(insets, false);
     }
 
