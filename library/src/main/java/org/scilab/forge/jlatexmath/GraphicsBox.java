@@ -45,9 +45,8 @@
 
 package org.scilab.forge.jlatexmath;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
-
-import java.awt.Image;
 
 /**
  * A box representing a box containing a graphics.
@@ -58,12 +57,12 @@ public class GraphicsBox extends Box {
     public final static int NEAREST_NEIGHBOR = 1;
     public final static int BICUBIC = 2;
 
-    private Image image;
+    private Bitmap bitmap;
     private float scl;
     private Object interp;
 
-    public GraphicsBox(Image image, float width, float height, float size, int interpolation) {
-	this.image = image;
+    public GraphicsBox(Bitmap bitmap, float width, float height, float size, int interpolation) {
+        this.bitmap = bitmap;
 	this.width = width;
 	this.height = height;
 	this.scl = 1 / size;
@@ -85,7 +84,7 @@ public class GraphicsBox extends Box {
         int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
         canvas.translate(x, y - height);
         canvas.scale(scl, scl);
-        canvas.drawBitmap(image.getBitmap(), 0, 0, null);
+        canvas.drawBitmap(bitmap, 0, 0, null);
         canvas.restoreToCount(save);
     }
     

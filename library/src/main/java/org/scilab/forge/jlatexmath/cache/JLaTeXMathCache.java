@@ -45,6 +45,7 @@
 
 package org.scilab.forge.jlatexmath.cache;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import org.scilab.forge.jlatexmath.ParseException;
@@ -52,7 +53,6 @@ import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.Insets;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
@@ -200,7 +200,7 @@ public final class JLaTeXMathCache {
         if (img == null || img.get() == null) {
             img = makeImage(cached);
         }
-        canvas.drawBitmap(img.get().image.getBitmap(), 0, 0, null);
+        canvas.drawBitmap(img.get().bitmap, 0, 0, null);
 
         return cached;
     }
@@ -213,11 +213,11 @@ public final class JLaTeXMathCache {
      * @param inset the inset to add on the top, bottom, left and right
      * @return the cached image
      */
-    public static Image getCachedTeXFormulaImage(String f, int style, int type, int size, int inset, Color fgcolor) throws ParseException {
+    public static Bitmap getCachedTeXFormulaImage(String f, int style, int type, int size, int inset, Color fgcolor) throws ParseException {
         return getCachedTeXFormulaImage(new CachedTeXFormula(f, style, type, size, inset, fgcolor));
     }
 
-    public static Image getCachedTeXFormulaImage(String f, int style, int size, int inset) throws ParseException {
+    public static Bitmap getCachedTeXFormulaImage(String f, int style, int size, int inset) throws ParseException {
         return getCachedTeXFormulaImage(f, style, 0, size, inset, null);
     }
 
@@ -226,7 +226,7 @@ public final class JLaTeXMathCache {
      * @param o an Object to identify the image in the cache
      * @return the cached image
      */
-    public static Image getCachedTeXFormulaImage(Object o) throws ParseException {
+    public static Bitmap getCachedTeXFormulaImage(Object o) throws ParseException {
         if (o == null || !(o instanceof CachedTeXFormula)) {
             return null;
         }
@@ -236,18 +236,18 @@ public final class JLaTeXMathCache {
             img = makeImage(cached);
         }
 
-        return img.get().image;
+        return img.get().bitmap;
     }
 
     private static SoftReference<CachedImage> makeImage(CachedTeXFormula cached) throws ParseException {
         TeXFormula formula = new TeXFormula(cached.f);
         TeXIcon icon = formula.createTeXIcon(cached.style, cached.size, cached.type, cached.fgcolor);
         icon.setInsets(new Insets(cached.inset, cached.inset, cached.inset, cached.inset));
-        Image image = new Image(icon.getIconWidth(), icon.getIconHeight());
-        Canvas canvas = new Canvas(image.getBitmap());
+        Bitmap bitmap = Bitmap.createBitmap(icon.getIconWidth(), icon.getIconHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
         icon.paintIcon(canvas, 0, 0);
         cached.setDimensions(icon.getIconWidth(), icon.getIconHeight(), icon.getIconDepth());
-        SoftReference<CachedImage> img = new SoftReference<CachedImage>(new CachedImage(image, cached), queue);
+        SoftReference<CachedImage> img = new SoftReference<CachedImage>(new CachedImage(bitmap, cached), queue);
 
         if (cache.size() >= max) {
             Reference soft;
@@ -274,11 +274,11 @@ public final class JLaTeXMathCache {
 
     private static class CachedImage {
 
-        Image image;
+        Bitmap bitmap;
         CachedTeXFormula cachedTf;
 
-        CachedImage(Image image, CachedTeXFormula cachedTf) {
-            this.image = image;
+        CachedImage(Bitmap bitmap, CachedTeXFormula cachedTf) {
+            this.bitmap = bitmap;
             this.cachedTf = cachedTf;
         }
     }

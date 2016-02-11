@@ -45,15 +45,16 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Image;
+import android.graphics.Bitmap;
+
 import java.util.Map;
 
 /**
  * An atom representing an atom containing a graphic.
  */
 public class GraphicsAtom extends Atom {
-    
-    private Image image = null;
+
+    private Bitmap bitmap = null;
 
     private Atom base;
     private boolean first = true;
@@ -90,15 +91,15 @@ public class GraphicsAtom extends Atom {
     }
 
     public Box createBox(TeXEnvironment env) {
-	if (image != null) {
+	if (bitmap != null) {
 	    if (first) {
 		first = false;
 		return base.createBox(env);
 	    } else {
 		env.isColored = true;
-                float width = image.getWidth() * SpaceAtom.getFactor(TeXConstants.UNIT_PIXEL, env);
-                float height = image.getHeight() * SpaceAtom.getFactor(TeXConstants.UNIT_PIXEL, env);
-                return new GraphicsBox(image, width, height, env.getSize(), interp);
+                float width = bitmap.getWidth() * SpaceAtom.getFactor(TeXConstants.UNIT_PIXEL, env);
+                float height = bitmap.getHeight() * SpaceAtom.getFactor(TeXConstants.UNIT_PIXEL, env);
+                return new GraphicsBox(bitmap, width, height, env.getSize(), interp);
 	    }
 	}
 
