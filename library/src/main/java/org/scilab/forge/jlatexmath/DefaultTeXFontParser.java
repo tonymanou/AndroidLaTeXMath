@@ -49,6 +49,7 @@
 package org.scilab.forge.jlatexmath;
 
 import com.tonymanou.androidlatexmath.helper.AssetHelper;
+import com.tonymanou.androidlatexmath.helper.Font;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
@@ -56,7 +57,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.awt.Font;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;

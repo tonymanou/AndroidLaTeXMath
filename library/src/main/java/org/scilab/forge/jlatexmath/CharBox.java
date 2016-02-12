@@ -80,7 +80,7 @@ public class CharBox extends Box {
         drawDebug(canvas, x, y);
         int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
         canvas.translate(x, y);
-        Typeface font = FontInfo.getFont(cf.fontId).getTypeFace();
+        Typeface font = FontInfo.getFont(cf.fontId).typeface;
         if (size != 1) {
             canvas.scale(size, size);
 	}

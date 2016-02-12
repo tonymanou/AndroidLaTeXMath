@@ -47,7 +47,7 @@
 package org.scilab.forge.jlatexmath;
 
 import com.tonymanou.androidlatexmath.helper.AssetHelper;
-import java.awt.Font;
+import com.tonymanou.androidlatexmath.helper.Font;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

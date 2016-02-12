@@ -47,8 +47,10 @@ package org.scilab.forge.jlatexmath;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 
-import java.awt.Font;
+import com.tonymanou.androidlatexmath.helper.Font;
+
 import java.awt.font.TextAttribute;
 import java.util.Hashtable;
 import java.util.Map;
@@ -72,7 +74,8 @@ public class JavaFontRenderingBox extends Box {
             KERNING_ON = (Integer) (TextAttribute.class.getField("KERNING_ON").get(TextAttribute.class));
             LIGATURES = (TextAttribute) (TextAttribute.class.getField("LIGATURES").get(TextAttribute.class));
             LIGATURES_ON = (Integer) (TextAttribute.class.getField("LIGATURES_ON").get(TextAttribute.class));
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
     }
 
     public JavaFontRenderingBox(String str, int type, float size, Font f, boolean kerning) {
@@ -85,8 +88,18 @@ public class JavaFontRenderingBox extends Box {
             f = f.deriveFont(map);
         }
 
+        Typeface tf = f.deriveTypeface(type);
+        paint.setTypeface(tf);
+        if (type > 0) {
+            int typefaceStyle = tf != null ? tf.getStyle() : 0;
+            int need = type & ~typefaceStyle;
+            paint.setFakeBoldText((need & Font.BOLD) != 0);
+            paint.setTextSkewX((need & Font.ITALIC) != 0 ? -0.25f : 0);
+        } else {
+            paint.setFakeBoldText(false);
+            paint.setTextSkewX(0);
+        }
         paint.setTextSize(size);
-        paint.setTypeface(f.deriveFont(type).getTypeFace());
 
         Paint.FontMetrics metrics = paint.getFontMetrics();
         this.height = -metrics.ascent;

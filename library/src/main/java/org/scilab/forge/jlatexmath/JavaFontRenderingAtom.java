@@ -45,7 +45,7 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Font;
+import com.tonymanou.androidlatexmath.helper.Font;
 
 /**
  * The string rendering is made in using Java.
