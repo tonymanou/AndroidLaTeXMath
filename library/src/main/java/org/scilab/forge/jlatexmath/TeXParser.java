@@ -45,7 +45,8 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Color;
+import com.tonymanou.androidlatexmath.helper.Color;
+
 import java.util.HashSet;
 import java.util.Set;
 

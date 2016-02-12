@@ -52,7 +52,7 @@ package org.scilab.forge.jlatexmath;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import java.awt.Color;
+import com.tonymanou.androidlatexmath.helper.Color;
 
 /**
  * An icon implementation that will paint the TeXFormula

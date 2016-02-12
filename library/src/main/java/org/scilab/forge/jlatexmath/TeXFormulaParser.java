@@ -46,11 +46,12 @@
 
 package org.scilab.forge.jlatexmath;
 
+import com.tonymanou.androidlatexmath.helper.Color;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -52,7 +52,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import java.awt.Color;
+import com.tonymanou.androidlatexmath.helper.Color;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;

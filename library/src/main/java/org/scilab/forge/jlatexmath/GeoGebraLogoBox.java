@@ -49,7 +49,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import java.awt.Color;
+import com.tonymanou.androidlatexmath.helper.Color;
 
 /**
  * A box representing a box containing a graphics.

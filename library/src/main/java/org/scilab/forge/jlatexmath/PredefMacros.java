@@ -45,11 +45,11 @@
 
 package org.scilab.forge.jlatexmath;
 
+import com.tonymanou.androidlatexmath.helper.Color;
 import com.tonymanou.androidlatexmath.helper.Font;
 
 import org.scilab.forge.jlatexmath.dynamic.DynamicAtom;
 
-import java.awt.Color;
 import java.util.Map;
 import java.util.StringTokenizer;
 

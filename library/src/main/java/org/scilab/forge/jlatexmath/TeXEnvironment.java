@@ -48,7 +48,7 @@
 
 package org.scilab.forge.jlatexmath;
 
-import java.awt.Color;
+import com.tonymanou.androidlatexmath.helper.Color;
 
 /**
  * Contains the used TeXFont-object, color settings and the current style in which a

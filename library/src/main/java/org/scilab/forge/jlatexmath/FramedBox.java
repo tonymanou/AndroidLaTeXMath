@@ -48,7 +48,7 @@ package org.scilab.forge.jlatexmath;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import java.awt.Color;
+import com.tonymanou.androidlatexmath.helper.Color;
 
 /**
  * A box representing a rotated box.

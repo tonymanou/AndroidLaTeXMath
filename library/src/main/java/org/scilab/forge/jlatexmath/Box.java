@@ -53,7 +53,8 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import java.awt.Color;
+import com.tonymanou.androidlatexmath.helper.Color;
+
 import java.util.LinkedList;
 
 /**

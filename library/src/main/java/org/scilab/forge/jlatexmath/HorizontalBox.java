@@ -48,7 +48,8 @@ package org.scilab.forge.jlatexmath;
 
 import android.graphics.Canvas;
 
-import java.awt.Color;
+import com.tonymanou.androidlatexmath.helper.Color;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
