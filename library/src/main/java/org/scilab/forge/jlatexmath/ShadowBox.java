@@ -65,22 +65,25 @@ public class ShadowBox extends FramedBox {
 
     @Override
     public void draw(Canvas canvas, float x, float y) {
+        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        canvas.translate(x, y);
 	float th = thickness / 2;
-        box.draw(canvas, x + space + thickness, y);
+        box.draw(canvas, space + thickness, 0);
         paint.setStrokeWidth(thickness);
         paint.setStyle(Paint.Style.STROKE);
-        rectF.set(x + th, y - height + th, width - shadowRule - thickness, height + depth - shadowRule - thickness);
+        rectF.set(th, - height + th, width - shadowRule - thickness + th, depth - shadowRule - thickness + th);
         canvas.drawRect(rectF, paint);
         float[] m = new float[9];
         canvas.getMatrix().getValues(m);
         float penth = Math.abs(1 / m[Matrix.MSCALE_X]);
         paint.setStrokeWidth(penth);
         paint.setStyle(Paint.Style.FILL);
-        rectF.set(x + shadowRule - penth, y + depth - shadowRule - penth, width - shadowRule, shadowRule);
+        rectF.set(shadowRule - penth, depth - shadowRule - penth, width - penth, depth - penth);
         canvas.drawRect(rectF, paint);
-        rectF.set(x + width - shadowRule - penth, y - height + th + shadowRule, shadowRule, depth + height - 2 * shadowRule - th);
+        rectF.set(width - shadowRule - penth, - height + th + shadowRule, width - penth, depth - shadowRule);
         canvas.drawRect(rectF, paint);
-	//drawDebug(g2, x, y);
+	//drawDebug(g2, 0, 0);
+        canvas.restoreToCount(save);
     }
 
     public int getLastFontId() {

@@ -87,8 +87,10 @@ public class FramedBox extends Box {
 
     @Override
     public void draw(Canvas canvas, float x, float y) {
+        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
         float th = thickness / 2f;
-        rectF.set(x + th, y - height + th, width - thickness, height + depth - thickness);
+        canvas.translate(x, y);
+        rectF.set(th, - height + th, width - thickness + th, depth - thickness + th);
 	if (bg != null) {
             canvas.drawRect(rectF, bgPaint);
 	}
@@ -98,8 +100,9 @@ public class FramedBox extends Box {
             paint.setColor(currentColor);
 	}
         canvas.drawRect(rectF, paint);
-	//drawDebug(g2, x, y);
-        box.draw(canvas, x + space + thickness, y);
+	//drawDebug(g2, 0, 0);
+        box.draw(canvas, space + thickness, 0);
+        canvas.restoreToCount(save);
     }
 
     public int getLastFontId() {

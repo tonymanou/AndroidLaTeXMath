@@ -310,7 +310,7 @@ public abstract class Box {
         // old color
         prevColor = currentColor;
         if (background != null) { // draw background
-            rectF.set(x, y - height, width, height + depth);
+            rectF.set(x, y - height, x + width, y + depth);
             canvas.drawRect(rectF, bgPaint);
         }
         if (foreground != null) {
@@ -324,7 +324,7 @@ public abstract class Box {
             if (markForDEBUG != null) {
                 debugPaint.setColor(markForDEBUG.getColor());
                 debugPaint.setStyle(Paint.Style.FILL);
-                rectF.set(x, y - height, width, height + depth);
+                rectF.set(x, y - height, x + width, y + depth);
                 canvas.drawRect(rectF, debugPaint);
             }
             float[] m = new float[9];
@@ -336,13 +336,13 @@ public abstract class Box {
                 x += width;
                 width = -width;
             }
-            rectF.set(x, y - height, width, height + depth);
+            rectF.set(x, y - height, x + width, y + depth);
             canvas.drawRect(rectF, debugPaint);
             if (showDepth) {
 		if (depth > 0) {
-                    rectF.set(x, y, width, depth);
+                    rectF.set(x, y, x + width, y + depth);
 		} else if (depth < 0) {
-                    rectF.set(x, y + depth, width, -depth);
+                    rectF.set(x, y + depth, x + width, y);
 		} else {
                     return;
                 }

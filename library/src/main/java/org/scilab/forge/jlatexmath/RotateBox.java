@@ -65,7 +65,7 @@ public class RotateBox extends Box {
     public static final int CC = 10;
     public static final int CR = 11;
 
-    protected double angle = 0;
+    private float angle;
     private Box box;
     private float xmax, xmin, ymax, ymin;
     private int option;
@@ -75,12 +75,13 @@ public class RotateBox extends Box {
 
     public RotateBox(Box b, double angle, float x, float y) {
         this.box = b;
-        this.angle = angle * Math.PI / 180;
+        this.angle = (float) angle;
         height = b.height;
         depth = b.depth;
         width = b.width;
-        double s = Math.sin(this.angle);
-        double c = Math.cos(this.angle);
+        double angleRad = angle * Math.PI / 180;
+        double s = Math.sin(angleRad);
+        double c = Math.cos(angleRad);
         shiftX = (float) (x * (1 - c) + y * s);
         shiftY = (float) (y * (1 - c) - x * s);
         xmax = (float) Math.max(-height * s, Math.max(depth * s, Math.max(width * c + depth * s, width * c - height * s))) + shiftX;
@@ -201,7 +202,7 @@ public class RotateBox extends Box {
         box.drawDebug(canvas, x, y, true);
         y -= shiftY;
         x += shiftX - xmin;
-        canvas.rotate((float) -angle, x, y);
+        canvas.rotate(-angle, x, y);
         box.draw(canvas, x, y);
         box.drawDebug(canvas, x, y, true);
         canvas.restoreToCount(save);

@@ -83,12 +83,15 @@ public class HorizontalRule extends Box {
 
     @Override
     public void draw(Canvas canvas, float x, float y) {
+        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        canvas.translate(x, y);
         if (speShift == 0) {
-            rectF.set(x, y - height, width, height);
+            rectF.set(0, 0, width, -height);
 	} else {
-            rectF.set(x, y - height + speShift, width, height);
+            rectF.set(0, 0, width, speShift - height);
 	}
         canvas.drawRect(rectF, paint);
+        canvas.restoreToCount(save);
     }
     
     public int getLastFontId() {

@@ -62,12 +62,15 @@ public class OvalBox extends FramedBox {
 
     @Override
     public void draw(Canvas canvas, float x, float y) {
-        box.draw(canvas, x + space + thickness, y);
+        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        canvas.translate(x, y);
+        box.draw(canvas, space + thickness, 0);
 	float th = thickness / 2;
-        rectF.set(x + th, y - height + th, width - thickness, height + depth - thickness);
+        rectF.set(th, - height + th, width - thickness + th, depth - thickness + th);
 	float r = 0.5f * Math.min(width - thickness, height + depth - thickness);
         canvas.drawRoundRect(rectF, r, r, paint);
-	//drawDebug(g2, x, y);
+	//drawDebug(g2, 0, 0);
+        canvas.restoreToCount(save);
     }
 
     public int getLastFontId() {
