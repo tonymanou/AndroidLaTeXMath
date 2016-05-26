@@ -63,28 +63,14 @@ public class JavaFontRenderingBox extends Box {
     private static Font font = new Font("Serif", Font.PLAIN, 10);
 
     private String str;
-    private static TextAttribute KERNING;
-    private static Integer KERNING_ON;
-    private static TextAttribute LIGATURES;
-    private static Integer LIGATURES_ON;
-
-    static {
-        try { // to avoid problems with Java 1.5
-            KERNING = (TextAttribute) (TextAttribute.class.getField("KERNING").get(TextAttribute.class));
-            KERNING_ON = (Integer) (TextAttribute.class.getField("KERNING_ON").get(TextAttribute.class));
-            LIGATURES = (TextAttribute) (TextAttribute.class.getField("LIGATURES").get(TextAttribute.class));
-            LIGATURES_ON = (Integer) (TextAttribute.class.getField("LIGATURES_ON").get(TextAttribute.class));
-        } catch (Exception e) {
-        }
-    }
 
     public JavaFontRenderingBox(String str, int type, float size, Font f, boolean kerning) {
         this.str = str;
 
-        if (kerning && KERNING != null) {
+        if (kerning && TextAttribute.KERNING != null) {
             Map<TextAttribute, Object> map = new Hashtable<TextAttribute, Object>();
-            map.put(KERNING, KERNING_ON);
-            map.put(LIGATURES, LIGATURES_ON);
+            map.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
+            map.put(TextAttribute.LIGATURES, TextAttribute.LIGATURES_ON);
             f = f.deriveFont(map);
         }
 
