@@ -1,0 +1,11 @@
+# Adnroid studio
+/.idea/
+/captures/
+**/build/
+*.iml
+.gradle
+/local.properties
+
+# Other
+.DS_Store
+/tmp/
