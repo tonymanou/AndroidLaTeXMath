@@ -9,7 +9,7 @@
 		</CreateCommand>
 		<Return name="f" />
 	</Command>
-	
+
 	<Command name="fooB" enabled="true">
 		<CreateCommand name="f">
 			<Argument type="String" value="Foo.FooPackage" />

@@ -1,8 +1,9 @@
-/* Example5.java
+/* Example6.java
  * =========================================================================
  * This file is part of the JLaTeXMath Library - http://jlatexmath.sourceforge.net
- * 
- * Copyright (C) 2010 DENIZET Calixte
+ *
+ * Copyright (C) 2016 Antoine MANN
+ * Copyright (C) 2011 DENIZET Calixte
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,41 +44,42 @@
  * 
  */
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+package com.tonymanou.androidlatexmath_examples.fragment;
 
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.JLabel;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Rect;
 
-import org.scilab.forge.jlatexmath.TeXConstants; 
+import com.tonymanou.androidlatexmath_examples.ExampleActivity.BaseExample;
+
+import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
+import org.scilab.forge.jlatexmath.TeXIcon;
 
-/**
- * A class to test LaTeX rendering.
- **/
-public class Example5 {
-    
-    public static void main(String[] args) {
-	
-	String latex = "\\begin{array}{|c|l|||r|c|}";
-	latex += "\\hline";
-	latex += "\\text{Matrix}&\\multicolumn{2}{|c|}{\\text{Multicolumns}}&\\text{Font sizes commands}\\cr";
-	latex += "\\hline";
-	latex += "\\begin{pmatrix}\\alpha_{11}&\\cdots&\\alpha_{1n}\\cr\\hdotsfor{3}\\cr\\alpha_{n1}&\\cdots&\\alpha_{nn}\\end{pmatrix}&\\Large \\text{Large Right}&\\small \\text{small Left}&\\tiny \\text{tiny Tiny}\\cr";
-	latex += "\\hline";
-	latex += "\\multicolumn{4}{|c|}{\\Huge \\text{Huge Multicolumns}}\\cr";
-	latex += "\\hline";
-	latex += "\\end{array}";
-	
-	TeXFormula formula = new TeXFormula(latex);
-	formula.createPNG(TeXConstants.STYLE_DISPLAY, 20, "Example5.png", Color.white, Color.black);
-    }    
+public class Example7 extends BaseExample {
+
+    @Override
+    protected void doExample() {
+        String latex = "\\mbox{abc abc abc abc abc abc abc abc abc abc abc abc abc abc\\\\abc abc abc abc abc abc abc\\\\abc abc abc abc abc abc abc}\\\\1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1";
+
+        TeXFormula formula = new TeXFormula(latex);
+        TeXIcon icon = formula.new TeXIconBuilder()
+                .setStyle(TeXConstants.STYLE_DISPLAY)
+                .setSize(30)
+                .setWidth(TeXConstants.UNIT_CM, 4, TeXConstants.ALIGN_LEFT)
+                .setInterLineSpacing(TeXConstants.UNIT_CM, 0.5f)
+                .build();
+
+        icon.setInsets(new Rect(5, 5, 5, 5));
+
+        Bitmap bitmap = Bitmap.createBitmap(icon.getIconWidth(), icon.getIconHeight(), Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(Color.WHITE);
+
+        TeXFormula.setDEBUG(true);
+        icon.paintIcon(new Canvas(bitmap), 0, 0);
+        TeXFormula.setDEBUG(false);
+
+        imageView.setImageBitmap(bitmap);
+    }
 }

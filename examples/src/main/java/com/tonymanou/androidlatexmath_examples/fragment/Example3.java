@@ -1,7 +1,8 @@
 /* Example3.java
  * =========================================================================
  * This file is part of the JLaTeXMath Library - http://jlatexmath.sourceforge.net
- * 
+ *
+ * Copyright (C) 2016 Antoine MANN
  * Copyright (C) 2009 DENIZET Calixte
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -43,31 +44,23 @@
  * 
  */
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+package com.tonymanou.androidlatexmath_examples.fragment;
 
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.JLabel;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Rect;
 
-import org.scilab.forge.jlatexmath.TeXConstants; 
+import com.tonymanou.androidlatexmath_examples.ExampleActivity.BaseExample;
+
+import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
-import org.scilab.forge.jlatexmath.TeXFormula.TeXIconBuilder;
 
-/**
- * A class to test LaTeX rendering.
- **/
-public class Example3 {
-    public static void main(String[] args) {
-        
+public class Example3 extends BaseExample {
+
+    @Override
+    protected void doExample() {
         String latex = "\\definecolor{gris}{gray}{0.9}";
         latex += "\\definecolor{noir}{rgb}{0,0,0}";
         latex += "\\definecolor{bleu}{rgb}{0,0,1}\\newcommand{\\pa}{\\left|}";
@@ -90,23 +83,17 @@ public class Example3 {
         latex += "\\end{array}";
 
         TeXFormula formula = new TeXFormula(latex);
-    	// Note: Old interface for creating icons:
-        //TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 20);
-    	// Note: New interface using builder pattern (inner class):
-    	TeXIcon icon = formula.new TeXIconBuilder().setStyle(TeXConstants.STYLE_DISPLAY).setSize(20).build();
-        
-        icon.setInsets(new Insets(5, 5, 5, 5));
-        
-        BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = image.createGraphics();
-        g2.setColor(Color.white);
-        g2.fillRect(0,0,icon.getIconWidth(),icon.getIconHeight());
-        JLabel jl = new JLabel();
-        jl.setForeground(new Color(0, 0, 0));
-        icon.paintIcon(jl, g2, 0, 0);
-        File file = new File("Example3.png");
-        try {
-            ImageIO.write(image, "png", file.getAbsoluteFile());
-        } catch (IOException ex) {}
-    }    
+        TeXIcon icon = formula.new TeXIconBuilder()
+                .setStyle(TeXConstants.STYLE_DISPLAY)
+                .setSize(20)
+                .build();
+
+        icon.setInsets(new Rect(5, 5, 5, 5));
+
+        Bitmap bitmap = Bitmap.createBitmap(icon.getIconWidth(), icon.getIconHeight(), Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(Color.WHITE);
+        icon.paintIcon(new Canvas(bitmap), 0, 0);
+
+        imageView.setImageBitmap(bitmap);
+    }
 }

@@ -1,7 +1,8 @@
 /* Example4.java
  * =========================================================================
  * This file is part of the JLaTeXMath Library - http://jlatexmath.sourceforge.net
- * 
+ *
+ * Copyright (C) 2016 Antoine MANN
  * Copyright (C) 2009 DENIZET Calixte
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -43,58 +44,45 @@
  * 
  */
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+package com.tonymanou.androidlatexmath_examples.fragment;
 
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.JLabel;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Rect;
 
-import org.scilab.forge.jlatexmath.TeXConstants; 
+import com.tonymanou.androidlatexmath_examples.ExampleActivity.BaseExample;
+
+import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
-import org.scilab.forge.jlatexmath.TeXFormula.TeXIconBuilder;
 
-/**
- * A class to test LaTeX rendering.
- **/
-public class Example4 {
-    public static void main(String[] args) {
-	
-	String latex = "\\begin{array}{|c|c|c|c|}\n";
-	latex += "\\multicolumn{4}{c}{\\shadowbox{\\text{\\Huge An image from the \\LaTeX3 project}}}\\cr\n";
-	latex += "\\hline\n";
-	latex += "\\text{Left}\\includegraphics{lion.png}\\text{Right} & \\text{Left}\\includegraphics[width=3cm,interpolation=bicubic]{lion.png}\\text{Right} & \\text{Left}\\includegraphics[angle=45,width=3cm]{lion.png}\\text{Right} & \\text{Left}\\includegraphics[angle=160]{lion.png}\\text{Right} \\cr\n";
-	latex += "\\hline\n";
-	latex += "\\text{\\backslash includegraphics\\{lion.png\\}} & \\text{\\backslash includegraphics[width=3cm,interpolation=bicubic]\\{lion.png\\}} & \\text{\\backslash includegraphics[angle=45,width=3cm]\\{lion.png\\}} & \\text{\\backslash includegraphics[angle=160]\\{lion.png\\}}\\cr\n";
-	latex += "\\hline\n";
-	latex += "\\end{array}\n";
+public class Example4 extends BaseExample {
 
-	TeXFormula formula = new TeXFormula(latex);
-	// Note: Old interface for creating icons:
-	//TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 10);
-	// Note: New interface using builder pattern (inner class):
-	TeXIcon icon = formula.new TeXIconBuilder().setStyle(TeXConstants.STYLE_DISPLAY).setSize(10).build();
+    @Override
+    protected void doExample() {
+        String latex = "\\begin{array}{|c|c|c|c|}\n";
+        latex += "\\multicolumn{4}{c}{\\shadowbox{\\text{\\Huge An image from the \\LaTeX3 project}}}\\cr\n";
+        latex += "\\hline\n";
+        latex += "\\text{Left}\\includegraphics{lion.png}\\text{Right} & \\text{Left}\\includegraphics[width=3cm,interpolation=bicubic]{lion.png}\\text{Right} & \\text{Left}\\includegraphics[angle=45,width=3cm]{lion.png}\\text{Right} & \\text{Left}\\includegraphics[angle=160]{lion.png}\\text{Right} \\cr\n";
+        latex += "\\hline\n";
+        latex += "\\text{\\backslash includegraphics\\{lion.png\\}} & \\text{\\backslash includegraphics[width=3cm,interpolation=bicubic]\\{lion.png\\}} & \\text{\\backslash includegraphics[angle=45,width=3cm]\\{lion.png\\}} & \\text{\\backslash includegraphics[angle=160]\\{lion.png\\}}\\cr\n";
+        latex += "\\hline\n";
+        latex += "\\end{array}\n";
 
-	icon.setInsets(new Insets(5, 5, 5, 5));
-	
-	BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-	Graphics2D g2 = image.createGraphics();
-	g2.setColor(Color.white);
-	g2.fillRect(0,0,icon.getIconWidth(),icon.getIconHeight());
-	JLabel jl = new JLabel();
-	jl.setForeground(new Color(0, 0, 0));
-	icon.paintIcon(jl, g2, 0, 0);
-	File file = new File("Example4.png");
-	try {
-	    ImageIO.write(image, "png", file.getAbsoluteFile());
-	} catch (IOException ex) {}
-    }    
+        TeXFormula formula = new TeXFormula(latex);
+        TeXIcon icon = formula.new TeXIconBuilder()
+                .setStyle(TeXConstants.STYLE_DISPLAY)
+                .setFGColor(com.tonymanou.jlatexmath.helper.Color.GREEN)
+                .setSize(10)
+                .build();
+
+        icon.setInsets(new Rect(5, 5, 5, 5));
+
+        Bitmap bitmap = Bitmap.createBitmap(icon.getIconWidth(), icon.getIconHeight(), Bitmap.Config.ARGB_8888);
+        bitmap.eraseColor(Color.WHITE);
+        icon.paintIcon(new Canvas(bitmap), 0, 0);
+
+        imageView.setImageBitmap(bitmap);
+    }
 }
