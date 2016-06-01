@@ -64,7 +64,7 @@ public class Example7 extends BaseExample {
         String latex = "\\mbox{abc abc abc abc abc abc abc abc abc abc abc abc abc abc\\\\abc abc abc abc abc abc abc\\\\abc abc abc abc abc abc abc}\\\\1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1";
 
         TeXFormula formula = new TeXFormula(latex);
-        TeXIcon icon = formula.new TeXIconBuilder()
+        TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
                 .setSize(30)
                 .setWidth(TeXConstants.UNIT_CM, 4, TeXConstants.ALIGN_LEFT)

@@ -71,7 +71,7 @@ public class Example4 extends BaseExample {
         latex += "\\end{array}\n";
 
         TeXFormula formula = new TeXFormula(latex);
-        TeXIcon icon = formula.new TeXIconBuilder()
+        TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
                 .setFGColor(com.tonymanou.jlatexmath.helper.Color.GREEN)
                 .setSize(10)

@@ -64,7 +64,7 @@ public class ExampleSwing2 extends BaseExample {
         String latex = "\\text{hello world}";
 
         TeXFormula formula = new TeXFormula(latex);
-        TeXIcon icon = formula.new TeXIconBuilder()
+        TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
                 .setSize(16)
                 .setWidth(TeXConstants.UNIT_PIXEL, 256f, TeXConstants.ALIGN_CENTER)

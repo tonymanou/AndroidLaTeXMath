@@ -71,7 +71,7 @@ public class Example5 extends BaseExample {
         latex += "\\end{array}";
 
         TeXFormula formula = new TeXFormula(latex);
-        TeXIcon icon = formula.new TeXIconBuilder()
+        TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
                 .setSize(20)
                 .build();

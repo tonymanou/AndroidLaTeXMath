@@ -627,6 +627,9 @@ public class TeXFormula {
         private Integer interLineUnit;
         private Float interLineSpacing;
 
+        private TeXIconBuilder() {
+        }
+
         /**
          * Specify the style for rendering the given TeXFormula
          * @param style the style
@@ -806,6 +809,10 @@ public class TeXFormula {
                 ti.isColored = te.isColored;
                 return ti;
             }
+    }
+
+    public TeXIconBuilder createTeXIconBuilder() {
+        return new TeXIconBuilder();
     }
 
     /**
