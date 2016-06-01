@@ -884,7 +884,7 @@ public class TeXFormula {
         return bitmap;
     }
 
-    public void setDEBUG(boolean b) {
+    public static void setDEBUG(boolean b) {
         Box.DEBUG = b;
     }
 
