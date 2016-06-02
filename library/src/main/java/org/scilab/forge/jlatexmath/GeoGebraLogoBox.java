@@ -58,7 +58,7 @@ public class GeoGebraLogoBox extends Box {
 
     private static final int gray = new Color(102, 102, 102).getColor();
     private static final int blue = new Color(153, 153, 255).getColor();
-    private static final int black = Color.BLACK.getColor();
+    private static final int black = new Color(0, 0, 0).getColor();
 
     private final Paint paint;
     private final RectF rectF;

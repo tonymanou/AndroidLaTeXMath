@@ -347,7 +347,7 @@ public abstract class Box {
 		} else {
                     return;
                 }
-                debugPaint.setColor(Color.RED.getColor());
+                debugPaint.setColor(Color.red.getColor());
                 debugPaint.setStyle(Paint.Style.FILL);
                 canvas.drawRect(rectF, debugPaint);
                 debugPaint.setColor(currentColor);

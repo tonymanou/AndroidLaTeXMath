@@ -73,7 +73,7 @@ public class Example4 extends BaseExample {
         TeXFormula formula = new TeXFormula(latex);
         TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
-                .setFGColor(com.tonymanou.jlatexmath.helper.Color.GREEN)
+                .setForeground(Color.GREEN)
                 .setSize(10)
                 .build();
 

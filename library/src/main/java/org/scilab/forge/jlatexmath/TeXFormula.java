@@ -614,7 +614,7 @@ public class TeXFormula {
         private Integer style;
         private Float size;
         private Integer type;
-        private Color fgcolor;
+        private Integer fgcolor;
         private boolean trueValues = false;
         private Integer widthUnit;
         private Float textWidth;
@@ -660,11 +660,11 @@ public class TeXFormula {
             }
 
         /**
-         * Specify the background color for rendering the given TeXFormula
+         * Specify the foreground color for rendering the given TeXFormula
          * @param fgcolor the foreground color
          * @return the builder, used for chaining
          */
-        public TeXIconBuilder setFGColor(final Color fgcolor)
+        public TeXIconBuilder setForeground(final int fgcolor)
             {
                 this.fgcolor = fgcolor;
                 return this;
@@ -800,7 +800,7 @@ public class TeXFormula {
                     ti = new TeXIcon(box, size, trueValues);
                 }
                 if (fgcolor != null) {
-                    ti.setForeground(fgcolor);
+                    ti.setForeground(new Color(fgcolor));
                 }
                 ti.isColored = te.isColored;
                 return ti;

@@ -1149,7 +1149,7 @@ public class TeXParser {
                     throw new ParseException("Unknown character : '"
                                              + Character.toString(c) + "' (or " + ((int) c) + ")");
                 } else {
-                    return new ColorAtom(new RomanAtom(new TeXFormula("\\text{(Unknown char " + ((int) c) + ")}").root), null, Color.RED);
+                    return new ColorAtom(new RomanAtom(new TeXFormula("\\text{(Unknown char " + ((int) c) + ")}").root), null, Color.red);
                 }
             } else {
                 if (!ignoreWhiteSpace) {// we are in text mode
@@ -1243,7 +1243,7 @@ public class TeXParser {
         if (!isPartial) {
             throw new ParseException("Unknown symbol or command or predefined TeXFormula: '" + command + "'");
         } else {
-            return new ColorAtom(new RomanAtom(new TeXFormula("\\backslash " + command).root), null, Color.RED);
+            return new ColorAtom(new RomanAtom(new TeXFormula("\\backslash " + command).root), null, Color.red);
         }
     }
 

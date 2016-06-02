@@ -50,12 +50,9 @@ import static android.graphics.Color.rgb;
 
 public class Color {
 
-    public static final Color TRANSPARENT = new Color(android.graphics.Color.TRANSPARENT);
-    public static final Color RED = new Color(android.graphics.Color.RED);
-    public static final Color BLACK = new Color(android.graphics.Color.BLACK);
-    public static final Color black = BLACK;
+    public static final Color black = new Color(android.graphics.Color.BLACK);
     public static final Color white = new Color(android.graphics.Color.WHITE);
-    public static final Color red = RED;
+    public static final Color red = new Color(android.graphics.Color.RED);
     public static final Color green = new Color(android.graphics.Color.GREEN);
     public static final Color blue = new Color(android.graphics.Color.BLUE);
     public static final Color cyan = new Color(android.graphics.Color.CYAN);
