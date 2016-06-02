@@ -58,8 +58,8 @@ import com.tonymanou.androidlatexmath.helper.Color;
  * An icon implementation that will paint the TeXFormula
  * that created it.
  * <p>
- * This class cannot be instantiated directly. It can be constructed from a
- * TeXFormula using the {@link TeXFormula#createTeXIcon(int,float)} method.
+ * This class cannot be instantiated directly. A builder can be constructed from a
+ * TeXFormula using the {@link TeXFormula#createTeXIconBuilder()} method.
  *
  * @author Kurt Vermeulen
  */

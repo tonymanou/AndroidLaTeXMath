@@ -242,7 +242,12 @@ public final class JLaTeXMathCache {
 
     private static SoftReference<CachedImage> makeImage(CachedTeXFormula cached) throws ParseException {
         TeXFormula formula = new TeXFormula(cached.f);
-        TeXIcon icon = formula.createTeXIcon(cached.style, cached.size, cached.type, cached.fgcolor);
+        TeXIcon icon = formula.createTeXIconBuilder()
+                .setStyle(cached.style)
+                .setSize(cached.size)
+                .setType(cached.type)
+                .setForeground(cached.fgcolor.getColor())
+                .build();
         icon.setInsets(new Rect(cached.inset, cached.inset, cached.inset, cached.inset));
         Bitmap bitmap = Bitmap.createBitmap(icon.getIconWidth(), icon.getIconHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);

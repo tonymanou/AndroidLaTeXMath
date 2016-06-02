@@ -48,10 +48,6 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-
 import com.tonymanou.androidlatexmath.helper.Color;
 
 import java.io.FileInputStream;
@@ -813,82 +809,6 @@ public class TeXFormula {
 
     public TeXIconBuilder createTeXIconBuilder() {
         return new TeXIconBuilder();
-    }
-
-    /**
-     * Creates a TeXIcon from this TeXFormula using the default TeXFont in the given
-     * point size and starting from the given TeX style. If the given integer value
-     * does not represent a valid TeX style, the default style
-     * TeXConstants.STYLE_DISPLAY will be used.
-     *
-     * @param style a TeX style constant (from {@link TeXConstants}) to start from
-     * @param size the default TeXFont's point size
-     * @return the created TeXIcon
-     */
-    public TeXIcon createTeXIcon(int style, float size) {
-        return new TeXIconBuilder().setStyle(style).setSize(size).build();
-    }
-
-    public TeXIcon createTeXIcon(int style, float size, int type) {
-        return new TeXIconBuilder().setStyle(style).setSize(size).setType(type).build();
-    }
-
-    public TeXIcon createTeXIcon(int style, float size, int type, Color fgcolor) {
-        return new TeXIconBuilder().setStyle(style).setSize(size).setType(type).setFGColor(fgcolor).build();
-    }
-
-    public TeXIcon createTeXIcon(int style, float size, boolean trueValues) {
-        return new TeXIconBuilder().setStyle(style).setSize(size).setTrueValues(trueValues).build();
-    }
-
-    public TeXIcon createTeXIcon(int style, float size, int widthUnit, float textwidth, int align) {
-        return createTeXIcon(style, size, 0, widthUnit, textwidth, align);
-    }
-
-    public TeXIcon createTeXIcon(int style, float size, int type, int widthUnit, float textwidth, int align) {
-        return new TeXIconBuilder().setStyle(style).setSize(size).setType(type).setWidth(widthUnit, textwidth, align).build();
-    }
-
-    public TeXIcon createTeXIcon(int style, float size, int widthUnit, float textwidth, int align, int interlineUnit, float interline) {
-        return createTeXIcon(style, size, 0, widthUnit, textwidth, align, interlineUnit, interline);
-    }
-
-    public TeXIcon createTeXIcon(int style, float size, int type, int widthUnit, float textwidth, int align, int interlineUnit, float interline) {
-        return new TeXIconBuilder().setStyle(style).setSize(size).setType(type).setWidth(widthUnit, textwidth, align).setInterLineSpacing(interlineUnit, interline).build();
-    }
-
-    /**
-     * @param formula the formula
-     * @param style the style
-     * @param size the size
-     * @return the generated image
-     */
-    public static Bitmap createBufferedImage(String formula, int style, float size, Color fg, Color bg) throws ParseException {
-        TeXFormula f = new TeXFormula(formula);
-        return f.createBufferedImage(style, size, fg, bg);
-    }
-
-    /**
-     * @param style the style
-     * @param size the size
-     * @return the generated image
-     */
-    public Bitmap createBufferedImage(int style, float size, Color fg, Color bg) throws ParseException {
-        TeXIcon icon = createTeXIcon(style, size);
-        icon.setInsets(new Rect(2, 2, 2, 2));
-        int w = icon.getIconWidth(), h = icon.getIconHeight();
-
-        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        if (bg != null) {
-            bitmap.eraseColor(bg.getColor());
-        }
-
-        Canvas canvas = new Canvas(bitmap);
-
-        icon.setForeground(fg == null ? Color.BLACK : fg);
-        icon.paintIcon(canvas, 0, 0);
-
-        return bitmap;
     }
 
     public static void setDEBUG(boolean b) {
