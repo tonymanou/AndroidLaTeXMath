@@ -97,7 +97,7 @@ public abstract class Box {
     protected final Color background;
 
     private int prevColor; // used temporarily in startDraw and endDraw
-    protected int currentColor = Color.magenta.getColor();
+    protected int currentColor = android.graphics.Color.MAGENTA;
 
     /**
      * The width of this box, i.e. the value that will be used for further
@@ -347,7 +347,7 @@ public abstract class Box {
 		} else {
                     return;
                 }
-                debugPaint.setColor(Color.red.getColor());
+                debugPaint.setColor(android.graphics.Color.RED);
                 debugPaint.setStyle(Paint.Style.FILL);
                 canvas.drawRect(rectF, debugPaint);
                 debugPaint.setColor(currentColor);

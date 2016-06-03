@@ -46,19 +46,18 @@
 package org.scilab.forge.jlatexmath;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-
-import com.tonymanou.androidlatexmath.helper.Color;
 
 /**
  * A box representing a box containing a graphics.
  */
 public class GeoGebraLogoBox extends Box {
 
-    private static final int gray = new Color(102, 102, 102).getColor();
-    private static final int blue = new Color(153, 153, 255).getColor();
-    private static final int black = new Color(0, 0, 0).getColor();
+    private static final int gray = Color.rgb(102, 102, 102);
+    private static final int blue = Color.rgb(153, 153, 255);
+    private static final int black = Color.rgb(0, 0, 0);
 
     private final Paint paint;
     private final RectF rectF;

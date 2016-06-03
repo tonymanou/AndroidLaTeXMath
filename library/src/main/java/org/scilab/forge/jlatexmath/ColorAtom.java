@@ -52,6 +52,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import static android.graphics.Color.parseColor;
+
 /**
  * An atom representing the foreground and background color of an other atom.
  */
@@ -127,7 +129,7 @@ public class ColorAtom extends Atom implements Row {
         if (s != null && s.length() != 0) {
             s = s.trim();
             if (s.charAt(0) == '#') {
-                return Color.decode(s);
+                return new Color(parseColor(s));
             } else if (s.indexOf(',') != -1) {
                 StringTokenizer toks = new StringTokenizer(s, ";,");
                 int n = toks.countTokens();
@@ -188,7 +190,7 @@ public class ColorAtom extends Atom implements Row {
                     } catch (NumberFormatException e) { }
                 }
 
-                return Color.decode("#" + s);
+                return new Color(parseColor("#" + s));
             }
         }
 

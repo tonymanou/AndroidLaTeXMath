@@ -45,7 +45,6 @@
 
 package com.tonymanou.androidlatexmath.helper;
 
-import static android.graphics.Color.parseColor;
 import static android.graphics.Color.rgb;
 
 public class Color {
@@ -71,10 +70,6 @@ public class Color {
 
     public Color(int i) {
         color = i;
-    }
-
-    public static Color decode(String s) {
-        return new Color(parseColor(s));
     }
 
     public int getColor() {
