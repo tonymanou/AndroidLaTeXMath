@@ -127,6 +127,8 @@ public class TeXParser {
     private static final char SUBLPAR = '\u208D';
     private static final char SUBRPAR = '\u208E';
 
+    private static final Color COLOR_UNKNOWN = new Color(0xFFFF0000);
+
     protected static boolean isLoading = false;
 
     private static final Set<String> unparsedContents = new HashSet<String>(6);
@@ -1149,7 +1151,7 @@ public class TeXParser {
                     throw new ParseException("Unknown character : '"
                                              + Character.toString(c) + "' (or " + ((int) c) + ")");
                 } else {
-                    return new ColorAtom(new RomanAtom(new TeXFormula("\\text{(Unknown char " + ((int) c) + ")}").root), null, Color.red);
+                    return new ColorAtom(new RomanAtom(new TeXFormula("\\text{(Unknown char " + ((int) c) + ")}").root), null, COLOR_UNKNOWN);
                 }
             } else {
                 if (!ignoreWhiteSpace) {// we are in text mode
@@ -1243,7 +1245,7 @@ public class TeXParser {
         if (!isPartial) {
             throw new ParseException("Unknown symbol or command or predefined TeXFormula: '" + command + "'");
         } else {
-            return new ColorAtom(new RomanAtom(new TeXFormula("\\backslash " + command).root), null, Color.red);
+            return new ColorAtom(new RomanAtom(new TeXFormula("\\backslash " + command).root), null, COLOR_UNKNOWN);
         }
     }
 

@@ -59,6 +59,8 @@ import static android.graphics.Color.parseColor;
  */
 public class ColorAtom extends Atom implements Row {
 
+    private static final Color BLACK = new Color(0xFF000000);
+
     public static Map<String,Color> Colors = new HashMap<String,Color>();
 
     // background color
@@ -156,7 +158,7 @@ public class ColorAtom extends Atom implements Row {
                             return new Color(r, g, b);
                         }
                     } catch (NumberFormatException e) {
-                        return Color.black;
+                        return BLACK;
                     }
                 } else if (n == 4) {
                     // CMYK model
@@ -173,7 +175,7 @@ public class ColorAtom extends Atom implements Row {
 
                         return convColor(c, m, y, k);
                     } catch (NumberFormatException e) {
-                        return Color.black;
+                        return BLACK;
                     }
                 }
             }
@@ -194,18 +196,18 @@ public class ColorAtom extends Atom implements Row {
             }
         }
 
-        return Color.black;
+        return BLACK;
     }
 
     private static void initColors() {
-        Colors.put("black", Color.black);
-        Colors.put("white", Color.white);
-        Colors.put("red", Color.red);
-        Colors.put("green", Color.green);
-        Colors.put("blue", Color.blue);
-        Colors.put("cyan", Color.cyan);
-        Colors.put("magenta", Color.magenta);
-        Colors.put("yellow", Color.yellow);
+        Colors.put("black", BLACK);
+        Colors.put("white", new Color(0xFFFFFFFF));
+        Colors.put("red", new Color(0xFFFF0000));
+        Colors.put("green", new Color(0xFF00FF00));
+        Colors.put("blue", new Color(0xFF0000FF));
+        Colors.put("cyan", new Color(0xFF00FFFF));
+        Colors.put("magenta", new Color(0xFFFF00FF));
+        Colors.put("yellow", new Color(0xFFFFFF00));
         Colors.put("greenyellow", convColor(0.15f, 0f, 0.69f, 0f));
         Colors.put("goldenrod", convColor(0f, 0.10f, 0.84f, 0f));
         Colors.put("dandelion", convColor(0f, 0.29f, 0.84f, 0f));
