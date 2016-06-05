@@ -49,11 +49,15 @@ import android.app.Application;
 
 import com.tonymanou.androidlatexmath.helper.AssetHelper;
 
+import org.scilab.forge.jlatexmath.TeXFormula;
+
 public class MainApplication extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
+
         AssetHelper.initialize(this);
+        TeXFormula.setDensityFrom(this);
     }
 }

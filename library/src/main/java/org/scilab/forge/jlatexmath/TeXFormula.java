@@ -48,6 +48,8 @@
 
 package org.scilab.forge.jlatexmath;
 
+import android.content.Context;
+
 import com.tonymanou.androidlatexmath.helper.Color;
 
 import java.io.FileInputStream;
@@ -198,11 +200,12 @@ public class TeXFormula {
     }
 
     /**
-     * Set the DPI of target
-     * @param dpi the target DPI
+     * Set the DPI of target.
+     *
+     * @param context the context from which the display density is retrieved.
      */
-    public static void setDPITarget(float dpi) {
-        PIXELS_PER_POINT = dpi / 72f;
+    public static void setDensityFrom(Context context) {
+        PIXELS_PER_POINT = context.getResources().getDisplayMetrics().density;
     }
 
     // the root atom of the "atom tree" that represents the formula

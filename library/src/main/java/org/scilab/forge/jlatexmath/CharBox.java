@@ -80,7 +80,7 @@ public class CharBox extends Box {
         int save = g.matrixSave();
         g.matrixTranslate(x, y);
         Typeface font = FontInfo.getFont(cf.fontId).typeface;
-        g.setFontSize(size);
+        g.setFontSize(size * TeXFormula.PIXELS_PER_POINT);
         if (size != 1) {
             g.matrixScale(size, size);
 	}

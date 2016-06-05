@@ -110,7 +110,7 @@ public class FooPackage {
 
         MyBox(int r, float f, boolean filled) {
             this.filled = filled;
-            this.radius = r;
+            this.radius = (int) (r * TeXFormula.PIXELS_PER_POINT);
             this.width = f;
             this.height = f / 2;
             this.depth = f / 2;
