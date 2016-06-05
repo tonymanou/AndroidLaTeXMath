@@ -45,7 +45,7 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 /**
  * A box representing a rotated box.
@@ -196,16 +196,16 @@ public class RotateBox extends Box {
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
-        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
-        drawDebug(canvas, x, y);
-        box.drawDebug(canvas, x, y, true);
+    public void draw(GraphicsHelper g, float x, float y) {
+        int save = g.matrixSave();
+        drawDebug(g, x, y);
+        box.drawDebug(g, x, y, true);
         y -= shiftY;
         x += shiftX - xmin;
-        canvas.rotate(-angle, x, y);
-        box.draw(canvas, x, y);
-        box.drawDebug(canvas, x, y, true);
-        canvas.restoreToCount(save);
+        g.matrixRotate(-angle, x, y);
+        box.draw(g, x, y);
+        box.drawDebug(g, x, y, true);
+        g.matrixRestoreToCount(save);
     }
 
     public int getLastFontId() {

@@ -46,7 +46,8 @@
 package org.scilab.forge.jlatexmath;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
+
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 /**
  * A box representing a box containing a graphics.
@@ -80,12 +81,12 @@ public class GraphicsBox extends Box {
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
-        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
-        canvas.translate(x, y - height);
-        canvas.scale(scl, scl);
-        canvas.drawBitmap(bitmap, 0, 0, null);
-        canvas.restoreToCount(save);
+    public void draw(GraphicsHelper g, float x, float y) {
+        int save = g.matrixSave();
+        g.matrixTranslate(x, y - height);
+        g.matrixScale(scl, scl);
+        g.drawBitmap(bitmap, 0, 0);
+        g.matrixRestoreToCount(save);
     }
     
     public int getLastFontId() {

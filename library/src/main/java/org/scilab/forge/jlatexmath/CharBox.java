@@ -46,8 +46,9 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
 import android.graphics.Typeface;
+
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 /**
  * A box representing a single character.
@@ -67,29 +68,28 @@ public class CharBox extends Box {
      */
     public CharBox(Char c) {
 	cf = c.getCharFont();
-        float fontSize = c.getMetrics().getSize();
-        size = fontSize;
-        paint.setTextSize(fontSize);
+        size = c.getMetrics().getSize();
 	width = c.getWidth();
 	height = c.getHeight();
 	depth = c.getDepth();
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
-        drawDebug(canvas, x, y);
-        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
-        canvas.translate(x, y);
+    public void draw(GraphicsHelper g, float x, float y) {
+        drawDebug(g, x, y);
+        int save = g.matrixSave();
+        g.matrixTranslate(x, y);
         Typeface font = FontInfo.getFont(cf.fontId).typeface;
+        g.setFontSize(size);
         if (size != 1) {
-            canvas.scale(size, size);
+            g.matrixScale(size, size);
 	}
-        if (paint.getTypeface() != font) {
-            paint.setTypeface(font);
+        if (g.getTypeface() != font) {
+            g.setTypeface(font);
 	}
 	arr[0] = cf.c;
-        canvas.drawText(arr, 0, 1, 0, 0, paint);
-        canvas.restoreToCount(save);
+        g.drawText(arr, 0, 1, 0, 0);
+        g.matrixRestoreToCount(save);
     }
     
     public int getLastFontId() {

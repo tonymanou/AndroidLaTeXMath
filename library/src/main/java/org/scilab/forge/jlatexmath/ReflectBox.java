@@ -45,7 +45,7 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 /**
  * A box representing a rotated box.
@@ -63,13 +63,13 @@ public class ReflectBox extends Box {
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
-        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
-        drawDebug(canvas, x, y);
-        canvas.translate(x, y);
-        canvas.scale(-1, 1);
-        box.draw(canvas, -width, 0);
-        canvas.restoreToCount(save);
+    public void draw(GraphicsHelper g, float x, float y) {
+        int save = g.matrixSave();
+        drawDebug(g, x, y);
+        g.matrixTranslate(x, y);
+        g.matrixScale(-1, 1);
+        box.draw(g, -width, 0);
+        g.matrixRestoreToCount(save);
     }
 
     public int getLastFontId() {

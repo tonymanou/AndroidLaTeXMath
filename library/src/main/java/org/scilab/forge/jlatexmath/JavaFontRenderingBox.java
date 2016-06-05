@@ -45,11 +45,11 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 
 import com.tonymanou.androidlatexmath.helper.Font;
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 import java.awt.font.TextAttribute;
 import java.util.Hashtable;
@@ -63,6 +63,7 @@ public class JavaFontRenderingBox extends Box {
     private static Font font = new Font("Serif", Font.PLAIN, 10);
 
     private String str;
+    private Paint paint;
 
     public JavaFontRenderingBox(String str, int type, float size, Font f, boolean kerning) {
         this.str = str;
@@ -75,6 +76,7 @@ public class JavaFontRenderingBox extends Box {
         }
 
         Typeface tf = f.deriveTypeface(type);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setTypeface(tf);
         if (type > 0) {
             int typefaceStyle = tf != null ? tf.getStyle() : 0;
@@ -102,12 +104,12 @@ public class JavaFontRenderingBox extends Box {
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
-        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
-        drawDebug(canvas, x, y);
-        canvas.translate(x, y);
-        canvas.drawText(str, 0, 0, paint);
-        canvas.restoreToCount(save);
+    public void draw(GraphicsHelper g, float x, float y) {
+        int save = g.matrixSave();
+        drawDebug(g, x, y);
+        g.matrixTranslate(x, y);
+        g.drawText(str, 0, 0, paint);
+        g.matrixRestoreToCount(save);
     }
 
     public int getLastFontId() {

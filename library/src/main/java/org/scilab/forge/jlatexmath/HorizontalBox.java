@@ -46,9 +46,8 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
-
 import com.tonymanou.androidlatexmath.helper.Color;
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,8 +107,8 @@ public class HorizontalBox extends Box {
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
-        startDraw(canvas, x, y);
+    public void draw(GraphicsHelper g, float x, float y) {
+        startDraw(g, x, y);
         float xPos = x;
         for (Box box: children) {
             /*int i = children.indexOf(box);
@@ -117,10 +116,10 @@ public class HorizontalBox extends Box {
               box.markForDEBUG = Color.BLUE;
               }*/
 
-            box.draw(canvas, xPos, y + box.shift);
+            box.draw(g, xPos, y + box.shift);
             xPos += box.getWidth();
         }
-        endDraw(canvas);
+        endDraw(g);
     }
 
     public final void add(Box b) {

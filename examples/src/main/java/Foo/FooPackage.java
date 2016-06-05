@@ -45,11 +45,10 @@
 
 package Foo;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.RectF;
+
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 import org.scilab.forge.jlatexmath.Atom;
 import org.scilab.forge.jlatexmath.Box;
@@ -107,33 +106,32 @@ public class FooPackage {
     private class MyBox extends Box {
 
         private boolean filled;
-        private Paint paint;
-        private RectF rectF;
+        private int radius;
 
         MyBox(int r, float f, boolean filled) {
             this.filled = filled;
+            this.radius = r;
             this.width = f;
             this.height = f / 2;
             this.depth = f / 2;
-
-            rectF = new RectF(0, 0, r, r);
-            paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-            paint.setColor(Color.RED);
         }
 
         @Override
-        public void draw(Canvas canvas, float x, float y) {
-            int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+        public void draw(GraphicsHelper g, float x, float y) {
+            int save = g.matrixSave();
 
-            float[] m = new float[9];
-            canvas.getMatrix().getValues(m);
-            canvas.translate(x, y - height);
-            canvas.scale(Math.abs(1 / m[Matrix.MSCALE_X]), Math.abs(1 / m[Matrix.MSCALE_Y]));
+            g.matrixTranslate(x, y - height);
+            float[] m = g.getMatrix();
+            g.matrixScale(Math.abs(1 / m[Matrix.MSCALE_X]), Math.abs(1 / m[Matrix.MSCALE_Y]));
 
-            paint.setStyle(filled ? Paint.Style.FILL : Paint.Style.STROKE);
-            canvas.drawOval(rectF, paint);
+            g.setRect(0, 0, radius, radius);
+            if (filled) {
+                g.fillOval(Color.RED);
+            } else {
+                g.drawOval(Color.RED);
+            }
 
-            canvas.restoreToCount(save);
+            g.matrixRestoreToCount(save);
         }
 
         @Override

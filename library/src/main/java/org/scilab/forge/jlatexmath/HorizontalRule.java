@@ -46,9 +46,8 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
-
 import com.tonymanou.androidlatexmath.helper.Color;
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 /**
  * A box representing a horizontal line.
@@ -82,16 +81,11 @@ public class HorizontalRule extends Box {
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
-        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
-        canvas.translate(x, y);
-        if (speShift == 0) {
-            rectF.set(0, 0, width, -height);
-	} else {
-            rectF.set(0, 0, width, speShift - height);
-	}
-        canvas.drawRect(rectF, paint);
-        canvas.restoreToCount(save);
+    public void draw(GraphicsHelper g, float x, float y) {
+        int save = g.matrixSave();
+        g.matrixTranslate(x, y);
+        g.drawRect(0, 0, width, speShift - height);
+        g.matrixRestoreToCount(save);
     }
     
     public int getLastFontId() {

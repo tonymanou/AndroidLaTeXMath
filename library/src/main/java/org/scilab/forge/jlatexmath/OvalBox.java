@@ -45,8 +45,9 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
+
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 /**
  * A box representing a rotated box.
@@ -57,20 +58,22 @@ public class OvalBox extends FramedBox {
 
     public OvalBox(FramedBox fbox) {
 	super(fbox.box, fbox.thickness, fbox.space);
-        paint.setStyle(Paint.Style.STROKE);
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
-        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
-        canvas.translate(x, y);
-        box.draw(canvas, space + thickness, 0);
+    public void draw(GraphicsHelper g, float x, float y) {
+        int save = g.matrixSave();
+        GraphicsHelper.Stroke stroke = g.getStroke();
+        g.setStroke(thickness, Paint.Cap.BUTT, Paint.Join.MITER);
+        g.matrixTranslate(x, y);
+        box.draw(g, space + thickness, 0);
 	float th = thickness / 2;
-        rectF.set(th, - height + th, width - thickness + th, depth - thickness + th);
+        g.setRect(th, th - height, width - thickness + th, depth - thickness + th);
 	float r = 0.5f * Math.min(width - thickness, height + depth - thickness);
-        canvas.drawRoundRect(rectF, r, r, paint);
+        g.drawRoundRect(r, r);
 	//drawDebug(g2, 0, 0);
-        canvas.restoreToCount(save);
+        g.setStroke(stroke);
+        g.matrixRestoreToCount(save);
     }
 
     public int getLastFontId() {

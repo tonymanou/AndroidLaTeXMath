@@ -53,6 +53,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import com.tonymanou.androidlatexmath.helper.Color;
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 /**
  * An icon implementation that will paint the TeXFormula
@@ -65,7 +66,7 @@ import com.tonymanou.androidlatexmath.helper.Color;
  */
 public class TeXIcon {
 
-    private static final Color defaultColor = new Color(0, 0, 0);
+    private static final int defaultColor = 0xFF000000;
 
     public static float defaultSize = -1;
     public static float magFactor = 0;
@@ -237,10 +238,14 @@ public class TeXIcon {
      * Paint the {@link TeXFormula} that created this icon.
      */
     public void paintIcon(Canvas canvas, int x, int y) {
-        canvas.scale(size, size); // the point size
-        box.currentColor = (fg != null ? fg : defaultColor).getColor();
+        GraphicsHelper g = new GraphicsHelper(canvas);
+        int save = g.matrixSave();
+        g.matrixScale(size, size); // the point size
+        g.setCurrentColor(fg != null ? fg.getColor() : defaultColor);
 
         // draw formula box
-        box.draw(canvas, (x + insets.left) / size, (y + insets.top) / size+ box.getHeight());
+        box.draw(g, (x + insets.left) / size, (y + insets.top) / size+ box.getHeight());
+
+        g.matrixRestoreToCount(save);
     }
 }

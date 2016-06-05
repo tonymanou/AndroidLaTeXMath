@@ -46,7 +46,7 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 import java.util.ListIterator;
 
@@ -112,11 +112,11 @@ class VerticalBox extends Box {
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
+    public void draw(GraphicsHelper g, float x, float y) {
         float yPos = y - height;
         for (Box b : children) {
             yPos += b.getHeight();
-            b.draw(canvas, x + b.getShift() - leftMostPos, yPos);
+            b.draw(g, x + b.getShift() - leftMostPos, yPos);
             yPos += b.getDepth();
         }
     }

@@ -48,12 +48,11 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.RectF;
 
 import com.tonymanou.androidlatexmath.helper.Color;
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 import java.util.LinkedList;
 
@@ -64,10 +63,10 @@ import java.util.LinkedList;
  * that can possibly be shifted (up, down, left or right). Child boxes can also be positioned
  * outside their parent's box (defined by it's dimensions).
  * <p>
- * Subclasses must implement the abstract {@link #draw(Canvas, float, float)} method
+ * Subclasses must implement the abstract {@link #draw(GraphicsHelper, float, float)} method
  * (that paints the box). <b> This implementation must start with calling the method
- * {@link #startDraw(Canvas, float, float)} and end with calling the method
- * {@link #endDraw(Canvas)} to set and restore the color's that must be used for
+ * {@link #startDraw(GraphicsHelper, float, float)} and end with calling the method
+ * {@link #endDraw(GraphicsHelper)} to set and restore the color's that must be used for
  * painting the box and to draw the background!</b> They must also implement the abstract
  * {@link #getLastFontId()} method (the last font
  * that will be used when this box will be painted).
@@ -75,12 +74,6 @@ import java.util.LinkedList;
 public abstract class Box {
 
     public static boolean DEBUG = false;
-
-    protected final Paint paint;
-    protected final Paint bgPaint;
-    protected final RectF rectF;
-
-    private final Paint debugPaint;
 
     /**
      * The foreground color of the whole box. Child boxes can override this color.
@@ -97,7 +90,6 @@ public abstract class Box {
     protected final Color background;
 
     private int prevColor; // used temporarily in startDraw and endDraw
-    protected int currentColor = android.graphics.Color.MAGENTA;
 
     /**
      * The width of this box, i.e. the value that will be used for further
@@ -132,6 +124,7 @@ public abstract class Box {
     protected Box parent;
     protected Box elderParent;
     protected Color markForDEBUG;
+    private static final int depthForDEBUG = 0xFFFF0000;
 
     /**
      * Inserts the given box at the end of the list of child boxes.
@@ -172,23 +165,8 @@ public abstract class Box {
      * @param bg the background color
      */
     protected Box(Color fg, Color bg) {
-        debugPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        debugPaint.setStrokeCap(Paint.Cap.BUTT);
-        debugPaint.setStrokeJoin(Paint.Join.MITER);
-
-        bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        if (bg != null) {
-            bgPaint.setColor(bg.getColor());
-        }
-        background = bg;
-
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        if (fg != null) {
-            paint.setColor(fg.getColor());
-        }
         foreground = fg;
-
-        rectF = new RectF();
+        background = bg;
     }
 
     public void setParent(Box parent) {
@@ -286,11 +264,11 @@ public abstract class Box {
     /**
      * Paints this box at the given coordinates using the given graphics context.
      *
-     * @param canvas the graphics context to use for painting
+     * @param g the graphics context to use for painting
      * @param x the x-coordinate
      * @param y the y-coordinate
      */
-    public abstract void draw(Canvas canvas, float x, float y);
+    public abstract void draw(GraphicsHelper g, float x, float y);
 
     /**
      * Get the id of the font that will be used the last when this box will be painted.
@@ -303,72 +281,61 @@ public abstract class Box {
      * Stores the old color setting, draws the background of the box (if not null)
      * and sets the foreground color (if not null).
      *
-     * @param canvas the graphics context
+     * @param g the graphics context
      * @param x the x-coordinate
      * @param y the y-coordinate
      */
-    protected void startDraw(Canvas canvas, float x, float y) {
+    protected final void startDraw(GraphicsHelper g, float x, float y) {
         // old color
-        prevColor = currentColor;
+        prevColor = g.getCurrentColor();
         if (background != null) { // draw background
-            rectF.set(x, y - height, x + width, y + depth);
-            canvas.drawRect(rectF, bgPaint);
+            g.fillRect(x, y - height, x + width, y + depth, background.getColor());
         }
         if (foreground != null) {
-            currentColor = foreground.getColor();
+            g.setCurrentColor(foreground.getColor());
         }
-        drawDebug(canvas, x, y);
+        drawDebug(g, x, y);
     }
 
-    protected void drawDebug(Canvas canvas, float x, float y, boolean showDepth) {
+    protected final void drawDebug(GraphicsHelper g, float x, float y, boolean showDepth) {
         if (DEBUG) {
             if (markForDEBUG != null) {
-                debugPaint.setColor(markForDEBUG.getColor());
-                debugPaint.setStyle(Paint.Style.FILL);
-                rectF.set(x, y - height, x + width, y + depth);
-                canvas.drawRect(rectF, debugPaint);
+                g.fillRect(x, y - height, x + width, y + depth, markForDEBUG.getColor());
             }
-            float[] m = new float[9];
-            canvas.getMatrix().getValues(m);
-            debugPaint.setStrokeWidth(Math.abs(1 / m[Matrix.MSCALE_X]));
-            debugPaint.setStyle(Paint.Style.STROKE);
-            debugPaint.setColor(currentColor);
+            GraphicsHelper.Stroke stroke = g.getStroke();
+            g.setStroke(Math.abs(1 / g.getMatrix()[Matrix.MSCALE_X]), Paint.Cap.BUTT, Paint.Join.MITER);
             if (width < 0) {
                 x += width;
                 width = -width;
             }
-            rectF.set(x, y - height, x + width, y + depth);
-            canvas.drawRect(rectF, debugPaint);
+            g.drawRect(x, y - height, x + width, y + depth);
             if (showDepth) {
 		if (depth > 0) {
-                    rectF.set(x, y, x + width, y + depth);
+                    g.setRect(x, y, x + width, y + depth);
+                    g.fillRect(depthForDEBUG);
+                    g.drawRect();
 		} else if (depth < 0) {
-                    rectF.set(x, y + depth, x + width, y);
-		} else {
-                    return;
+                    g.setRect(x, y + depth, x + width, y);
+                    g.fillRect(depthForDEBUG);
+                    g.drawRect();
                 }
-                debugPaint.setColor(android.graphics.Color.RED);
-                debugPaint.setStyle(Paint.Style.FILL);
-                canvas.drawRect(rectF, debugPaint);
-                debugPaint.setColor(currentColor);
-                debugPaint.setStyle(Paint.Style.STROKE);
-                canvas.drawRect(rectF, debugPaint);
             }
+            g.setStroke(stroke);
         }
     }
 
-    protected void drawDebug(Canvas canvas, float x, float y) {
+    protected final void drawDebug(GraphicsHelper g, float x, float y) {
         if (DEBUG) {
-            drawDebug(canvas, x, y, true);
+            drawDebug(g, x, y, true);
         }
     }
 
     /**
      * Restores the previous color setting.
      *
-     * @param canvas the graphics context
+     * @param g the graphics context
      */
-    protected void endDraw(Canvas canvas) {
-        currentColor = prevColor;
+    protected final void endDraw(GraphicsHelper g) {
+        g.setCurrentColor(prevColor);
     }
 }

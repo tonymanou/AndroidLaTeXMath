@@ -45,10 +45,10 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.tonymanou.androidlatexmath.helper.Color;
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 /**
  * A box representing a rotated box.
@@ -69,40 +69,34 @@ public class FramedBox extends Box {
 	this.shift = box.shift;
 	this.thickness = thickness;
 	this.space = space;
-
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(thickness);
-        paint.setStrokeCap(Paint.Cap.BUTT);
-        paint.setStrokeJoin(Paint.Join.MITER);
     }
 
     public FramedBox(Box box, float thickness, float space, Color line, Color bg) {
 	this(box, thickness, space);
 	this.line = line;
 	this.bg = bg;
-
-        paint.setColor(line.getColor());
-        bgPaint.setColor(bg.getColor());
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
-        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+    public void draw(GraphicsHelper g, float x, float y) {
+        GraphicsHelper.Stroke stroke = g.getStroke();
+        g.setStroke(thickness, Paint.Cap.BUTT, Paint.Join.MITER);
+        int save = g.matrixSave();
         float th = thickness / 2f;
-        canvas.translate(x, y);
-        rectF.set(th, - height + th, width - thickness + th, depth - thickness + th);
+        g.matrixTranslate(x, y);
+        g.setRect(th, - height + th, width - thickness + th, depth - thickness + th);
 	if (bg != null) {
-            canvas.drawRect(rectF, bgPaint);
+            g.fillRect(bg.getColor());
 	}
 	if (line != null) {
-            paint.setColor(line.getColor());
+            g.drawRect(line.getColor());
 	} else {
-            paint.setColor(currentColor);
+            g.drawRect();
 	}
-        canvas.drawRect(rectF, paint);
 	//drawDebug(g2, 0, 0);
-        box.draw(canvas, space + thickness, 0);
-        canvas.restoreToCount(save);
+        g.setStroke(stroke);
+        box.draw(g, space + thickness, 0);
+        g.matrixRestoreToCount(save);
     }
 
     public int getLastFontId() {

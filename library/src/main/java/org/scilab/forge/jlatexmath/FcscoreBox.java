@@ -45,9 +45,10 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 /**
  * A box representing glue.
@@ -67,18 +68,13 @@ public class FcscoreBox extends Box {
 	this.strike = strike;
 	this.space = space;
 	this.thickness = thickness;
-
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeCap(Paint.Cap.BUTT);
-        paint.setStrokeJoin(Paint.Join.MITER);
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
-        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+    public void draw(GraphicsHelper g, float x, float y) {
+        int save = g.matrixSave();
 
-        float[] m = new float[9];
-        canvas.getMatrix().getValues(m);
+        float[] m = g.getMatrix();
         final float sx = m[Matrix.MSCALE_X];
         final float sy = m[Matrix.MSCALE_Y];
         float s = 1;
@@ -87,25 +83,27 @@ public class FcscoreBox extends Box {
 	    // spacing... 
 	    // So the increment (space+thickness) is done in using integer.
 	    s = sx;
-            canvas.scale(1 / sx, 1 / sy);
+            g.matrixScale(1 / sx, 1 / sy);
 	}
 
-        paint.setStrokeWidth(s * thickness);
+        GraphicsHelper.Stroke stroke = g.getStroke();
+        g.setStroke(s * thickness, Paint.Cap.BUTT, Paint.Join.MITER);
 	float th = thickness / 2.f;
 	float xx = x + space;
 	xx = (float) (xx * s + (space / 2.f) * s);
 	final int inc = (int) Math.round((space + thickness) * s);
 
 	for (int i = 0; i < N; i++) {
-            canvas.drawLine(xx + th * s, (y - height) * s, xx + th * s, y * s, paint);
+            g.drawLine(xx + th * s, (y - height) * s, xx + th * s, y * s);
 	    xx += inc;
 	}
 
 	if (strike) {
-            canvas.drawLine((x + space) * s, (y - height / 2.f) * s, xx - s * space / 2, (y - height / 2.f) * s, paint);
+            g.drawLine((x + space) * s, (y - height / 2.f) * s, xx - s * space / 2, (y - height / 2.f) * s);
 	}
+        g.setStroke(stroke);
 
-        canvas.restoreToCount(save);
+        g.matrixRestoreToCount(save);
     }
 
     public int getLastFontId() {

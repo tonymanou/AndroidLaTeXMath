@@ -45,9 +45,10 @@
 
 package org.scilab.forge.jlatexmath;
 
-import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+
+import com.tonymanou.androidlatexmath.helper.GraphicsHelper;
 
 /**
  * A box representing a rotated box.
@@ -64,26 +65,21 @@ public class ShadowBox extends FramedBox {
     }
 
     @Override
-    public void draw(Canvas canvas, float x, float y) {
-        int save = canvas.save(Canvas.MATRIX_SAVE_FLAG);
-        canvas.translate(x, y);
+    public void draw(GraphicsHelper g, float x, float y) {
+        int save = g.matrixSave();
+        g.matrixTranslate(x, y);
 	float th = thickness / 2;
-        box.draw(canvas, space + thickness, 0);
-        paint.setStrokeWidth(thickness);
-        paint.setStyle(Paint.Style.STROKE);
-        rectF.set(th, - height + th, width - shadowRule - thickness + th, depth - shadowRule - thickness + th);
-        canvas.drawRect(rectF, paint);
-        float[] m = new float[9];
-        canvas.getMatrix().getValues(m);
-        float penth = Math.abs(1 / m[Matrix.MSCALE_X]);
-        paint.setStrokeWidth(penth);
-        paint.setStyle(Paint.Style.FILL);
-        rectF.set(shadowRule - penth, depth - shadowRule - penth, width - penth, depth - penth);
-        canvas.drawRect(rectF, paint);
-        rectF.set(width - shadowRule - penth, - height + th + shadowRule, width - penth, depth - shadowRule);
-        canvas.drawRect(rectF, paint);
+        box.draw(g, space + thickness, 0);
+        GraphicsHelper.Stroke stroke = g.getStroke();
+        g.setStroke(thickness, Paint.Cap.BUTT, Paint.Join.MITER);
+        g.drawRect(th, th - height, width - shadowRule - thickness + th, depth - shadowRule - thickness + th);
+        float penth = Math.abs(1 / g.getMatrix()[Matrix.MSCALE_X]);
+        g.setStroke(penth);
+        g.fillRect(shadowRule - penth, depth - shadowRule - penth, width - penth, depth - penth);
+        g.fillRect(width - shadowRule - penth, - height + th + shadowRule, width - penth, depth - shadowRule);
 	//drawDebug(g2, 0, 0);
-        canvas.restoreToCount(save);
+        g.setStroke(stroke);
+        g.matrixRestoreToCount(save);
     }
 
     public int getLastFontId() {
@@ -92,7 +88,7 @@ public class ShadowBox extends FramedBox {
 }
 /*
 
-    public void draw(Canvas canvas, float x, float y) {
+    public void draw(GraphicsHelper g, float x, float y) {
 	float th = thickness / 2;
 	float sh = shadowRule / 2;
 	box.draw(g2, x + space + thickness, y);
