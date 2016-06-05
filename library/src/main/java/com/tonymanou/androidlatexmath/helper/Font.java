@@ -67,11 +67,11 @@ public class Font {
     }
 
     public Font(String fontName, int style, float size) {
-        throw new UnsupportedOperationException(fontName);
+        this(Typeface.create(fontName, toTypefaceStyle(style)), style, size);
     }
 
     public Font deriveFont(Map<TextAttribute, Object> map) {
-        return null;
+        return new Font(typeface, style, size); // FIXME no effect for now
     }
 
     public Typeface deriveTypeface(int type) {
