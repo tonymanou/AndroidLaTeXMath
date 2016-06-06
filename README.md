@@ -52,7 +52,7 @@ icon.paintIcon(canvas, 0, 0);
 
 Have fun!
 
-Do not hesitate to take a look at [the various samples](blob/master/examples/src/main/java/com/tonymanou/androidlatexmath_examples/fragment/)
+Do not hesitate to take a look at [the various samples](examples/src/main/java/com/tonymanou/androidlatexmath_examples/fragment/)
 provided with the library for more information.
 
 
