@@ -57,6 +57,9 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
+/**
+ * This example shows how to use various fonts, including greek and cyrillic, as well as using colors.
+ */
 public class Example1 extends BaseExample {
 
     @Override
@@ -82,7 +85,7 @@ public class Example1 extends BaseExample {
         TeXFormula formula = new TeXFormula(latex);
         TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
-                .setSize(20)
+                .setSize(16)
                 .build();
 
         icon.setInsets(new Rect(5, 5, 5, 5));

@@ -57,6 +57,9 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
+/**
+ * This example shows how to add a width constraint to a latex formula.
+ */
 public class Example7 extends BaseExample {
 
     @Override
@@ -66,7 +69,7 @@ public class Example7 extends BaseExample {
         TeXFormula formula = new TeXFormula(latex);
         TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
-                .setSize(30)
+                .setSize(16)
                 .setWidth(TeXConstants.UNIT_CM, 4, TeXConstants.ALIGN_LEFT)
                 .setInterLineSpacing(TeXConstants.UNIT_CM, 0.5f)
                 .build();
@@ -76,9 +79,7 @@ public class Example7 extends BaseExample {
         Bitmap bitmap = Bitmap.createBitmap(icon.getIconWidth(), icon.getIconHeight(), Bitmap.Config.ARGB_8888);
         bitmap.eraseColor(Color.WHITE);
 
-        TeXFormula.setDEBUG(true);
         icon.paintIcon(new Canvas(bitmap), 0, 0);
-        TeXFormula.setDEBUG(false);
 
         imageView.setImageBitmap(bitmap);
     }

@@ -57,6 +57,9 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
+/**
+ * This example shows how to write mathematical formulas and use a default color for rendering.
+ */
 public class Example2 extends BaseExample {
 
     @Override
@@ -75,7 +78,8 @@ public class Example2 extends BaseExample {
         TeXFormula formula = new TeXFormula(latex);
         TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
-                .setSize(20)
+                .setSize(11)
+                .setForeground(0xFF158050)
                 .build();
 
         icon.setInsets(new Rect(5, 5, 5, 5));

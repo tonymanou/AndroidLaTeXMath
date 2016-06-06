@@ -57,6 +57,9 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
+/**
+ * This example shows how to draw a table and an image with various sizes and angles.
+ */
 public class Example4 extends BaseExample {
 
     @Override
@@ -66,14 +69,13 @@ public class Example4 extends BaseExample {
         latex += "\\hline\n";
         latex += "\\text{Left}\\includegraphics{lion.png}\\text{Right} & \\text{Left}\\includegraphics[width=3cm,interpolation=bicubic]{lion.png}\\text{Right} & \\text{Left}\\includegraphics[angle=45,width=3cm]{lion.png}\\text{Right} & \\text{Left}\\includegraphics[angle=160]{lion.png}\\text{Right} \\cr\n";
         latex += "\\hline\n";
-        latex += "\\text{\\backslash includegraphics\\{lion.png\\}} & \\text{\\backslash includegraphics[width=3cm,interpolation=bicubic]\\{lion.png\\}} & \\text{\\backslash includegraphics[angle=45,width=3cm]\\{lion.png\\}} & \\text{\\backslash includegraphics[angle=160]\\{lion.png\\}}\\cr\n";
+        latex += "\\text{normal} & \\text{width=3cm} & \\text{angle=45, width=3cm} & \\text{angle=160}\\cr\n";
         latex += "\\hline\n";
         latex += "\\end{array}\n";
 
         TeXFormula formula = new TeXFormula(latex);
         TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
-                .setForeground(Color.GREEN)
                 .setSize(10)
                 .build();
 

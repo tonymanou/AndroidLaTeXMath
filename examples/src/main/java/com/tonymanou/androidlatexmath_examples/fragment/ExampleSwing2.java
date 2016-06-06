@@ -57,17 +57,20 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
+/**
+ * This example shows how to add a width constraint to a latex formula.
+ */
 public class ExampleSwing2 extends BaseExample {
 
     @Override
     protected void doExample() {
-        String latex = "\\text{hello world}";
+        String latex = "\\text{Hello world, this is my new sample.}";
 
         TeXFormula formula = new TeXFormula(latex);
         TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
                 .setSize(16)
-                .setWidth(TeXConstants.UNIT_PIXEL, 256f, TeXConstants.ALIGN_CENTER)
+                .setWidth(TeXConstants.UNIT_PIXEL, 200f, TeXConstants.ALIGN_CENTER)
                 .setIsMaxWidth(true)
                 .setInterLineSpacing(TeXConstants.UNIT_PIXEL, 20f)
                 .build();
@@ -77,8 +80,6 @@ public class ExampleSwing2 extends BaseExample {
         Bitmap bitmap = Bitmap.createBitmap(icon.getIconWidth(), icon.getIconHeight(), Bitmap.Config.ARGB_8888);
         bitmap.eraseColor(Color.WHITE);
         icon.paintIcon(new Canvas(bitmap), 0, 0);
-
-//        label.setMaximumSize(new Dimension(100, 300));
 
         imageView.setImageBitmap(bitmap);
     }

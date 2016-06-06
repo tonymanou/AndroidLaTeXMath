@@ -66,9 +66,9 @@ import java.io.InputStream;
  * <li>{@link Foo.FooPackage} class,</li>
  * <li>{@code Package_Foo.xml} asset.</li>
  * </ul></p>
- * The commands \newcommand and \newenvironment are already handled by JLaTeXMath but I didn't implemented any TeX
- * functions. So low-level macros can be added to JLaTeXMath but they must be wrote in Java (or in any language
- * callable by Java).
+ * The commands \newcommand and \newenvironment are already handled by AndroidLaTeXMath but there is no other TeX
+ * functions implemented. So low-level macros can be added to AndroidLaTeXMath but they must be written in Java (or in
+ * any language callable by Java).
  */
 public class ExampleMacro extends BaseExample {
 
@@ -79,15 +79,15 @@ public class ExampleMacro extends BaseExample {
 
         String latex = "\\begin{array}{l}";
         latex += "\\fooA{\\pi}{C}\\\\";
-        latex += "\\mbox{A red circle }\\fooB{75.3}\\\\";
-        latex += "\\mbox{A red disk }\\fooC[abc]{126.7}\\\\";
-        latex += "\\mbox{An other red circle }\\fooD{159.81}[ab]";
+        latex += "\\mbox{A red circle }\\fooB{40.5}\\\\";
+        latex += "\\mbox{A red disk }\\fooC[abc]{75}\\\\";
+        latex += "\\mbox{An other red circle }\\fooD{120}[ab]";
         latex += "\\end{array}";
 
         TeXFormula formula = new TeXFormula(latex);
         TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
-                .setSize(20)
+                .setSize(16)
                 .build();
 
         icon.setInsets(new Rect(5, 5, 5, 5));

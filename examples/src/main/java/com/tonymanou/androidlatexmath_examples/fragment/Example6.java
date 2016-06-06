@@ -57,6 +57,9 @@ import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
 
+/**
+ * This example shows how to draw special characters and boxes of various shapes.
+ */
 public class Example6 extends BaseExample {
 
     @Override
@@ -69,7 +72,7 @@ public class Example6 extends BaseExample {
         TeXFormula formula = new TeXFormula(latex);
         TeXIcon icon = formula.createTeXIconBuilder()
                 .setStyle(TeXConstants.STYLE_DISPLAY)
-                .setSize(30)
+                .setSize(20)
                 .build();
 
         icon.setInsets(new Rect(5, 5, 5, 5));
