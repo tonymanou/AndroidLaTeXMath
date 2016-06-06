@@ -13,13 +13,8 @@ It is still a work in progress, many things could be improved and a better wrapp
 How to use
 ------
 
-Add the following dependency in your ```build.gradle```:
-
-```
-dependencies {
-    compile 'com.tonymanou.library:androidlatexmath:1.0.0'
-}
-```
+The library will be available soon as a jCenter/sonatype dependency, until then you can include the compiled
+```androidlatextmath-1.0.0.aar``` file into your project.
 
 Before using the library, you must initialize it from the ```onCreate()``` method of your application class:
 
